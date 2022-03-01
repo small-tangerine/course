@@ -7,7 +7,7 @@
           v-for="(filter, index) in filter"
           :key="index"
           class="filter-item"
-          :class="{active: currentFilterIndex == index}"
+          :class="{active: currentFilterIndex === index}"
           @click="handleFilterClick(filter,index)"
         >
           {{ filter.title }}

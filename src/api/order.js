@@ -2,7 +2,7 @@ import axios from 'utils/axios.js'
 
 // 分页获取用户充值记录接口
 export function getUserRecharges (params) {
-  return axios.get('/api/v1/recharge/', {
+  return axios.get('/api/v1/recharge/list', {
     params
   })
 }
@@ -26,7 +26,7 @@ export function getCouponList (params) {
 
 // 用户消费记录接口
 export function getUserBillList (params) {
-  return axios.get('/api/v1/bill/', {
+  return axios.get('/api/v1/bill/list', {
     params
   })
 }
@@ -50,7 +50,7 @@ export function orderPay (data) {
 
 // 订单列表
 export function getOrderList (params) {
-  return axios.get('/api/v1/order/', {
+  return axios.get('/api/v1/order/list', {
     params
   })
 }

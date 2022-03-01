@@ -10,12 +10,6 @@
             <i class="iconfont">&#xe63c;</i>
           </div>
         </div>
-        <dl v-if="hot.length" class="hot-box">
-          <dt>热搜：</dt>
-          <dd v-for="(item,index) in hot" :key="index" class="hot-item">
-            {{ item.value }}
-          </dd>
-        </dl>
       </div>
     </div>
   </div>
@@ -50,10 +44,12 @@ export default {
       .search-box
         float: right;
         margin-top: 24px;
+        overflow:hidden;
         .input-box
           position: relative;
           height: 48px;
           .input
+            background :#f3f5f6;
             display: inline-block;
             vertical-align: middle;
             padding: 0 16px;

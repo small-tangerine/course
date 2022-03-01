@@ -2,7 +2,7 @@ import axios from 'utils/axios.js';
 
 // 获取购物车列表接口
 export function getCartList () {
-  return axios.get('/api/v1/cart/');
+  return axios.get('/api/v1/cart/list');
 }
 
 // 单个添加购物车接口

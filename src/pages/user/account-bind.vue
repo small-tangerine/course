@@ -43,26 +43,6 @@
           <p class="bind-subtitle">用于保护账号信息和登录安全</p>
         </div>
       </dd>
-      <dd class="bind-item">
-        <i class="iconfont">&#xe6a0;</i>
-        <div class="bind-introduction">
-          <p class="bind-title">
-            <span class="bind-type">QQ</span>
-            {{ userinfo.qq }}
-          </p>
-          <p class="bind-subtitle">可用第三方QQ账号快速登录慕课网</p>
-        </div>
-      </dd>
-      <dd class="bind-item">
-        <i class="iconfont">&#xe646;</i>
-        <div class="bind-introduction">
-          <p class="bind-title">
-            <span class="bind-type">微信</span>
-            {{ userinfo.wechat }}
-          </p>
-          <p class="bind-subtitle">可用第三方微信账号快速登录慕课网</p>
-        </div>
-      </dd>
     </dl>
 
     <!-- 账号绑定信息弹窗 -->
@@ -79,12 +59,6 @@
         </el-form-item>
         <el-form-item label="确认密码" prop="ckpassword">
           <el-input v-model.trim="editForm.ckpassword" type="password" show-password placeholder="请再次输入密码"></el-input>
-        </el-form-item>
-        <el-form-item label="QQ账号" prop="qq">
-          <el-input v-model.trim="editForm.qq" placeholder="请输入QQ账号"></el-input>
-        </el-form-item>
-        <el-form-item label="微信账号" prop="wechat">
-          <el-input v-model.trim="editForm.wechat" placeholder="请输入微信账号"></el-input>
         </el-form-item>
       </el-form>
       <template slot="footer">
@@ -128,12 +102,6 @@ export default {
       ckpassword: [
         { required: true, message: '请再次输入密码', trigger: 'blur' },
         { validator: validatePassword, trigger: 'blur' }
-      ],
-      qq: [
-        { required: true, message: '请输入QQ账号', trigger: 'blur' }
-      ],
-      wechat: [
-        { required: true, message: '请输入微信账号', trigger: 'blur' }
       ]
     }
     return {
@@ -144,9 +112,7 @@ export default {
         email: '',
         phone: '',
         password: '',
-        ckpassword: '',
-        qq: '',
-        wechat: ''
+        ckpassword: ''
       }
     }
   },
@@ -168,9 +134,7 @@ export default {
         email: this.userInfo.email,
         phone: this.userInfo.phone,
         password: '',
-        ckpassword: '',
-        qq: this.userInfo.qq,
-        wechat: this.userInfo.wechat
+        ckpassword: ''
       }
       this.$nextTick(() => {
         this.$refs.editForm.resetFields()
@@ -215,7 +179,7 @@ export default {
       'logout': 'login/logout'
     }),
     ...mapMutations({
-      'showLogin': 'login/SET_SHOW_LOGIN' 
+      'showLogin': 'login/SET_SHOW_LOGIN'
     })
   },
   computed: {

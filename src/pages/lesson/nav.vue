@@ -6,7 +6,7 @@
           v-for="(item,index) in categoryList"
           :key="index"
           class="nav-item"
-          :class="{active: index == currentCategoryIndex}"
+          :class="{active: index === currentCategoryIndex}"
           @click="handleCategoryClick(item, index)"
         >
           {{ item.title }}
@@ -18,7 +18,7 @@
         v-for="(label,index) in currentLabels"
         :key="index"
         class="label-item"
-        :class="{active: index == currentLabelIndex}"
+        :class="{active: index === currentLabelIndex}"
         @click="handleLabelClick(label, index)"
       >
         {{ label.title }}
@@ -117,9 +117,7 @@ export default {
   .lesson-nav-container
     .lesson-nav
       z-index: 1;
-      position: relative;
       padding: 16px 0;
-      height: 72px;
       box-sizing: border-box;
       box-shadow: 0 8px 16px 0 rgba(7,17,27,0.1)
       background-color: #fff;

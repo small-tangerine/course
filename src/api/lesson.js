@@ -2,12 +2,12 @@ import axios from 'utils/axios.js'
 
 // 课程导航
 export function getLessonNav () {
-  return axios.get('/api/v1/label')
+  return axios.get('/api/v1/label/list')
 }
 
 // 课程列表
 export function getLessonList (params) {
-  return axios.get('/api/v1/lesson', {
+  return axios.get('/api/v1/lesson/list', {
     params
   })
 }

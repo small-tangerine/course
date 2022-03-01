@@ -12,12 +12,12 @@
               v-for="(nav,index) in navList"
               :key="index"
               class="nav-item"
-              :class="{active: currentNavIndex == index}"
+              :class="{active: currentNavIndex === index}"
               @click="handleNavClick(nav,index)"
             >
-              <i v-if="nav.code == 0" class="iconfont">&#xe981;</i>
-              <i v-if="nav.code == 1" class="iconfont">&#xe668;</i>
-              <i v-if="nav.code == 2" class="iconfont">&#xe685;</i>
+              <i v-if="nav.code === 0" class="iconfont">&#xe981;</i>
+              <i v-if="nav.code === 1" class="iconfont">&#xe668;</i>
+              <i v-if="nav.code === 2" class="iconfont">&#xe685;</i>
               {{ nav.title }}
             </li>
           </ul>
@@ -42,9 +42,7 @@ export default {
   created () {
     // 初始化导航数据
     this.navList = [
-      { title: '我的课程', code: 0,  componentName: 'Course', key: 'free' },
-      { title: '猿问', code: 1, componentName: 'Question', key: 'question' },
-      { title: '手记', code: 2, componentName: 'Article', key: 'article' }
+      { title: '我的课程', code: 0,  componentName: 'Course', key: 'free' }
     ]
   },
   methods: {
@@ -64,9 +62,7 @@ export default {
   },
   components: {
     CourseHeader,
-    Course: () => import('./course.vue'),
-    Question: () => import('./question.vue'),
-    Article: () => import('./article.vue')
+    Course: () => import('./course.vue')
   }
 }
 </script>

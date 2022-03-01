@@ -1,7 +1,7 @@
 <template>
   <ul class="login-area">
     <li class="item cart" @mouseenter="showMiniCart = true" @mouseleave="handleCarItemtMouseLeave">
-      <a href="javascript:;">
+      <a href="javascript:">
         <i class="iconfont">&#xe63b;</i>
         <span class="login-text">购物车</span>
         <div class="mini-chart-container" @mouseenter="handleCartMouseEnter" @mouseleave="showMiniCart = false">
@@ -10,30 +10,17 @@
       </a>
     </li>
     <template v-if="userInfo && userInfo.id">
-      <li class="item bell">
-        <router-link to="/notice">
-          <mooc-badge :max="99" :is-dot="isDot">
-            <i class="iconfont">&#xe6eb;</i>
-          </mooc-badge>
-        </router-link>
-      </li>
       <li class="item userinfo" @mouseenter="showUserInfo = true" @mouseleave="showUserInfo = false">
         <div class="img-box">
           <img :src="userInfo.avatar" alt="">
         </div>
         <div v-show="showUserInfo" class="userinfo-wrapper">
-          <div class="userinfo-message-wrapper">
+          <div class="userinfo-message-wrapper" style="justify-content: center">
             <img :src="userInfo.avatar" alt="">
-            <div class="userinfo-message">
-              <p class="name ellipsis">
-                {{ userInfo.nickname }}
-              </p>
-              <p class="number">
-                <span class="number-item">经验 <b>{{ userInfo.exp }}</b></span>
-                <span class="number-item">积分 <b>{{ userInfo.integral }}</b></span>
-              </p>
-            </div>
           </div>
+          <p class="name ellipsis" style="line-height: 3">
+            {{ userInfo.nickname }}
+          </p>
           <div class="fast-nav" @click.stop="showUserInfo = false">
             <router-link to="/user/course">
               <div class="fast-nav-item">
@@ -47,24 +34,12 @@
                 订单中心
               </div>
             </router-link>
-            <router-link to="/integral">
-              <div class="fast-nav-item">
-                <i class="iconfont">&#xe61b;</i>
-                积分商城
-              </div>
-            </router-link>
             <router-link to="/user">
               <div class="fast-nav-item">
                 <i class="iconfont">&#xe680;</i>
                 个人设置
               </div>
             </router-link>
-          </div>
-          <div v-if="userInfo.lastCourse" class="course-history">
-            <i class="iconfont">&#xe62f;</i>
-            <span class="course-name ellipsis">{{ userInfo.lastCourse && userInfo.lastCourse.name }}</span>
-            <span class="course-chapter ellipsis">{{ userInfo.lastCourse && userInfo.lastCourse.chapter }}</span>
-            <span class="course-btn" @click="handleHistoryClick">继续</span>
           </div>
           <p class="exit-btn">
             <span @click="handleUserLogout">安全退出</span>
@@ -79,8 +54,6 @@
   </ul>
 </template>
 <script>
-import { getNotReadNotice } from 'api/notice.js'
-import { ERR_OK } from 'api/config.js'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 export default {
   data () {
@@ -89,11 +62,6 @@ export default {
       cartList: [],
       showMiniCart: false,
       showUserInfo: false
-    }
-  },
-  mounted () {
-    if (this.userInfo.id) {
-      this.getNotReadNoticeData()
     }
   },
   methods: {
@@ -124,25 +92,6 @@ export default {
         this.$router.push('/home')
       }).catch(() => {
         this.$message.error('退出登录失败')
-      })
-    },
-    // 课程历史点击
-    handleHistoryClick () {
-      let random = new Date().getTime()
-      this.showUserInfo = false
-      this.$router.push(`/lesson/${random}`)
-    },
-    // 获取未读消息数据
-    getNotReadNoticeData () {
-      getNotReadNotice().then(res => {
-        const { code, data } = res
-        if (code === ERR_OK && data === true) {
-          this.isDot = true
-        } else {
-          this.isDot = false
-        }
-      }).catch(() => {
-        this.isDot = false
       })
     },
     // vuex
@@ -261,7 +210,7 @@ export default {
           position: absolute;
           right: 0;
           top: 72px;
-          width: 306px;
+          width: 170px;
           padding: 24px;
           background-color: #fff;
           border-bottom-left-radius: 12px;
@@ -277,29 +226,11 @@ export default {
               width: 72px;
               height: 72px;
               border-radius: 50%;
-            .userinfo-message
-              flex: 1;
-              & > p
-                line-height: 1;
-                &.name
-                  font-size: 16px;
-                  color: #07111b;
-                  line-height: 24px;
-                &.number
-                  margin-top: 4px;
-                  font-size: 12px;
-                  line-height: 12px;
-                  .number-item
-                    margin-right: 10px;
-                    & > b
-                      margin-left: 2px;
-                      font-weight: 750;
-                      color: #93999f;
           .fast-nav
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            margin: 20px 0 10px;
+            margin-bottom: 10px;
             .fast-nav-item
               flex: 0 0 126px;
               width: 126px;
@@ -352,6 +283,7 @@ export default {
                 color: #00b43c;
           .exit-btn
             line-height: 24px;
+            text-align: center;
             & > span
               font-size: 14px;
               line-height: 24px;

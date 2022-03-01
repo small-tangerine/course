@@ -2,7 +2,7 @@ import axios from 'utils/axios.js'
 
 // 分页获取中心列表
 export function getNoticeList (params) {
-  return axios.get(`/api/v1/notice/`, {
+  return axios.get(`/api/v1/notice/list`, {
     params: params
   })
 }

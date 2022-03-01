@@ -34,7 +34,7 @@ export function updateUserInfo (data) {
 
 // 获取用户课程信息接口
 export function getUserCourse (params) {
-  return axios.get('/api/v1/user/course/', {
+  return axios.get('/api/v1/user/course/list', {
     params
   })
 }

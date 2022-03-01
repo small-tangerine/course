@@ -11,26 +11,16 @@
         <el-input v-model.trim="loginForm.ckpassword" placeholder="请再次输入密码" show-password />
       </el-form-item>
       <el-form-item class="auto-login-item">
-        <template v-if="index == 0">
-          <el-checkbox v-model="loginForm.auto">
-            七天内自动登录
-          </el-checkbox>
+        <template v-if="index === 0">
           <div class="auto-login-btn-box">
-            <span>找回密码</span>
-            <span>无法登陆</span>
+            <span>忘记密码</span>
           </div>
-        </template>
-        <template v-else>
-          <el-checkbox v-model="loginForm.argement">
-            同意
-          </el-checkbox>
-          <span class="agreement">《慕课网注册协议》</span>
         </template>
       </el-form-item>
     </el-form>
     <button
       class="login-btn"
-      :class="{'is-loading': isLoading || (index == 1 && !loginForm.argement)}"
+
       @click="handleValidateForm"
     >
       {{ btnText }}
@@ -38,7 +28,6 @@
   </div>
 </template>
 <script>
-import crypto from 'crypto-js'
 import { mapMutations } from 'vuex'
 import { userLogin, userRegister } from 'api/user.js'
 import { ERR_OK } from 'api/config.js'
@@ -74,9 +63,7 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        ckpassword: '',
-        auto: true,
-        argement: false
+        ckpassword: ''
       }
     }
   },
@@ -95,9 +82,6 @@ export default {
   methods: {
     // 表单校验
     handleValidateForm () {
-      if (this.isLoading || (this.index === 1 && !this.loginForm.argement)) {
-        return false
-      }
       this.$refs['loginForm'].validate((valid) => {
         if (valid) {
           this.handleBtnClick()
@@ -121,7 +105,6 @@ export default {
         if (code !== ERR_OK) {
           this.loginForm.password = ''
           this.loginForm.ckpassword = ''
-          this.loginForm.argement = false
           this.$message.error(msg)
           return false
         }

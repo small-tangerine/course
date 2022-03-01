@@ -257,15 +257,13 @@ router.post('/pay', checkUser, async (ctx) => {
 // 订单列表
 router.get('/list', checkUser, async (ctx) => {
   const userid = ctx.session.user_id
+  console.log(userid)
   const { page = 1, status = '', size = SIZE } = ctx.query
   // 主动处理过期数据
   try {
     const time = new Date((new Date().getTime() - 30 * 60 * 1000)).toISOString().replace('T', ' ').substring(0, 19)
     await Order.find({
       userid: userid,
-      time: {
-        $lt: time
-      },
       'status.code': {
         $ne: 1
       }
