@@ -26,18 +26,7 @@ import { getHomeNav } from 'api/home.js'
 export default {
   data () {
     return {
-      navList: [
-        {
-          "path": "/course",
-          "title": "免费课程",
-          "icon": ""
-        },
-        {
-          "path": "/lesson",
-          "title": "实战课程",
-          "icon": ""
-        }
-      ],
+      navList: [],
       currentTags: [],
       currentLessons: [],
       showNavContent: false

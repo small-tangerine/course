@@ -1,16 +1,5 @@
 <template>
   <ul class="login-area">
-    <li class="item invite">
-      <router-link to="/">
-        <img src="https://www.imooc.com/static/img/index/redPacket.png" width="14" height="16" alt="">
-        <span class="login-text">邀请有奖</span>
-      </router-link>
-    </li>
-    <li class="item download">
-      <a href="javascript:;">
-        <span class="login-text">下载APP</span>
-      </a>
-    </li>
     <li class="item cart" @mouseenter="showMiniCart = true" @mouseleave="handleCarItemtMouseLeave">
       <a href="javascript:;">
         <i class="iconfont">&#xe63b;</i>

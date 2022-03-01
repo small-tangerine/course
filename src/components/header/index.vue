@@ -3,54 +3,44 @@
     <!-- logo -->
     <div class="logo-box">
       <router-link to="/">
-        <img src="https://www.imooc.com/static/img/index/logo.png" height="72" alt="Logo">
+        <img src="https://www.imooc.com/static/img/index/logo.png" height="60" style="margin-top: 6px" alt="Logo">
       </router-link>
     </div>
 
     <!-- 导航栏模块 -->
     <m-nav v-if="navList.length" :list="navList" />
 
-    <!-- 搜索框模块 -->
-    <search />
-
     <!-- 登录模块 -->
     <login-area />
   </div>
 </template>
 <script>
-import Search from 'components/search/search.vue'
 import MNav from './nav.vue'
 import LoginArea from './login.vue'
-import { getHeader } from 'api/common.js'
-import { ERR_OK } from 'api/config.js'
 export default {
   data () {
     return {
-      navList: {}
-    }
-  },
-  mounted () {
-    this.getHeaderData()
-  },
-  methods: {
-    // 获取头部导航数据
-    getHeaderData () {
-      getHeader().then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.navList = data
-        } else {
-          this.$message.error(msg)
-          this.navList = []
+      navList: [
+        {
+          "path": "/home",
+          "title": "首页",
+          "icon":''
+        },
+        {
+          "path": "/course",
+          "title": "免费课程",
+          "icon": ""
+        },
+        {
+          "path": "/lesson",
+          "title": "付费课程",
+          "icon": ""
         }
-      }).catch(() => {
-        this.navList = []
-      })
+      ]
     }
   },
   components: {
     MNav,
-    Search,
     LoginArea
   }
 }
