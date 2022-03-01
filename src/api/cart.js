@@ -7,7 +7,7 @@ export function getCartList () {
 
 // 单个添加购物车接口
 export function addCart (data) {
-  return axios.post('/api/v1/cart/', data);
+  return axios.post('/api/v1/cart/create', data);
 }
 
 // 单个删除购物车接口
@@ -18,5 +18,5 @@ export function deleteCart (data) {
 
 // 多个删除购物车接口
 export function multipleDeleteCart (data) {
-  return axios.delete(`/api/cart/${data.ids}`, data);
+  return axios.delete(`/api/cart/delete/${data.ids}`, data);
 }
