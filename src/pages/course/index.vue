@@ -6,7 +6,7 @@
         <img src="https://www.imooc.com/static/img/course/logo-course2.png" width="96" height="60" alt="">
         <img src="https://www.imooc.com/static/img/course/course-top.png" style="margin-bottom: 17px;" alt="">
       </div>
-      <course-search />
+      <course-search @searchList="getCourseListData" />
     </div>
 
     <!-- 导航模块 -->
@@ -43,19 +43,10 @@ export default {
     this.getCourseListData()
   },
   methods: {
-    // 导航值更新事件
-    handleNavChange (params) {
-      this.params = params
-      this.getCourseListData()
-    },
     // 分页值更新
     handlePaginationChange (page) {
       this.page = page
       this.getCourseListData()
-    },
-    // 收藏or取消收藏点击事件
-    handleCollectClick (item, index) {
-      this.courseList[index].isLike = !this.courseList[index].isLike
     },
     // 获取课程导航信息
     getCourseNavList () {
@@ -73,10 +64,11 @@ export default {
       })
     },
     // 获取课程信息接口
-    getCourseListData () {
+    getCourseListData (keyword) {
       const params = {
         page: this.page,
         size: this.size,
+        keyword:keyword,
         type: 0,
         category: this.params.direction,
         label: this.params.category,

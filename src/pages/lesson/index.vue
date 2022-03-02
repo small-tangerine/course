@@ -1,14 +1,14 @@
 <template>
   <div class="lesson">
     <!-- 搜索 -->
-    <lesson-search :hot="hotList" />
+    <lesson-search @searchList="getLessonListData" />
 
     <!-- 导航 -->
     <lesson-nav v-if="navList.length" :nav="navList" :params.sync="params" />
 
     <!-- 列表 -->
     <lesson-list :list="lessonList" :sort.sync="sort" @change="getLessonListData" />
-    
+
     <!-- 分页 -->
     <pagination :total="total" :page.sync="page" :size="size" @change="handlePaginationChange" />
   </div>
@@ -18,7 +18,6 @@ import LessonSearch from './search.vue'
 import LessonNav from './nav.vue'
 import LessonList from './list.vue'
 import Pagination from 'components/pagination/pagination.vue'
-import { getHot } from 'api/common.js'
 import { getLessonNav, getLessonList } from 'api/lesson.js'
 import { ERR_OK } from 'api/config.js'
 export default {
@@ -30,12 +29,10 @@ export default {
       size: 15,
       total: 0,
       lessonList: [],
-      navList: [],
-      hotList: []
+      navList: []
     }
   },
   mounted () {
-    this.getHotData()
     this.getLessonNavData()
     this.getLessonListData()
   },
@@ -44,21 +41,6 @@ export default {
     handlePaginationChange (page) {
       this.page = page
       this.getLessonListData()
-    },
-    // 获取热搜词数据
-    getHotData () {
-      getHot().then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.hotList = data
-        } else {
-          this.hotList = []
-          this.$message.error(msg)
-        }
-      }).catch(() => {
-        this.hotList = []
-        this.$message.error('接口异常')
-      })
     },
     // 获取导航数据
     getLessonNavData () {
@@ -76,10 +58,11 @@ export default {
       })
     },
     // 获取课程列表数据
-    getLessonListData () {
+    getLessonListData (keyword) {
       const params = {
         page: this.page,
         size: this.size,
+        keyword:keyword,
         type: 1,
         category: this.params.category,
         label: this.params.label,
@@ -120,4 +103,3 @@ export default {
 }
 </script>
 
- 

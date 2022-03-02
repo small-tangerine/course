@@ -58,8 +58,10 @@
 </template>
 <script>
 import Empty from 'components/empty/empty.vue'
-import { addCart } from 'api/cart.js'
-import { ERR_OK } from 'api/config.js'
+import {addCart} from 'api/cart.js'
+import {ERR_OK} from 'api/config.js'
+import {mapGetters} from "vuex";
+import store from "@/store";
 export default {
   props: {
     list: {
@@ -84,6 +86,9 @@ export default {
       { title: '销量', code: '-persons' }
     ]
   },
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
   methods: {
     // 筛选项点击事件
     handleFilterClick (filter, index) {
@@ -92,8 +97,12 @@ export default {
     },
     // 加入购物车
     handleAddCartClick (item) {
-      const params = item
-      addCart(params).then(res => {
+    if (!this.userInfo.id){
+      store.commit('login/SET_LOGIN_ACTION', 'login')
+      store.commit('login/SET_SHOW_LOGIN', true)
+      return
+    }
+      addCart(item).then(res => {
         const { code, msg } = res
         if (code === ERR_OK) {
           this.$confirm('添加购物车成功', '提示', {
@@ -115,12 +124,6 @@ export default {
       if (lesson.isBuy) {
         this.$router.push(`/lesson/${lesson.id}`)
       }
-    }
-  },
-  computed: {
-    // 已收藏课程数量
-    computeLikeLesson () {
-      return this.list.filter(item => item.isLike).length || 0
     }
   },
   components: {

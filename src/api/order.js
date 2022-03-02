@@ -9,7 +9,7 @@ export function getUserRecharges (params) {
 
 // 新增用户充值记录接口
 export function createUserRecharges (data) {
-  return axios.post('/api/v1/recharge/', data)
+  return axios.post('/api/v1/recharge/create', data)
 }
 
 // 查询用户余额接口
@@ -33,7 +33,7 @@ export function getUserBillList (params) {
 
 // 生成订单
 export function createOrder (data) {
-  return axios.post('/api/v1/order/', data)
+  return axios.post('/api/v1/order/create', data)
 }
 
 // 订单详情

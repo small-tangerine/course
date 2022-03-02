@@ -7,24 +7,22 @@
           v-for="(item,index) in loginTabs"
           :key="index"
           class="login-tab-item"
-          :class="{active: index==currentTabIndex}"
+          :class="{active: index===currentTabIndex}"
           @click="currentTabIndex = index"
         >{{ item }}</span>
         <span class="login-close iconfont" @click="setShowLogin(false)">&#xe619;</span>
       </div>
       <component :is="componentName" :index="currentTabIndex" />
-
     </div>
   </div>
 </template>
 <script>
 import LoginWay from './login.vue'
-import QrcodeWay from './qrcode.vue'
 import { mapMutations, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      loginTabs: ['登录', '注册'],
+      loginTabs: ['登录', '注册', '忘记密码'],
       currentTabIndex: 0,
       componentName: 'login-way'
     }
@@ -37,31 +35,17 @@ export default {
     handleMaskClick () {
       this.$emit('maskClick')
     },
-    // 二维码点击事件
-    handleQrcodeClick () {
-      this.componentName = this.componentName === 'qrcode-way' ? 'login-way' : 'qrcode-way'
-    },
     // vuex
     ...mapMutations({
       'setShowLogin': 'login/SET_SHOW_LOGIN'
     })
   },
   computed: {
-    getQrcodeBackground () {
-      let background = this.componentName === 'qrcode-way' ? 'pcLogin.png' : 'erweima.png'
-      return {
-        background: `url('https://www.imooc.com/static/img/${background}') no-repeat 0 0`
-      }
-    },
-    threeTitle () {
-      return this.currentTabIndex === 0 ? '手机短信登陆' : '其它登陆方式'
-    },
     // vuex
     ...mapGetters(['loginAction'])
   },
   components: {
-    LoginWay,
-    QrcodeWay
+    LoginWay
   }
 }
 </script>

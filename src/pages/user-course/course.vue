@@ -5,7 +5,7 @@
         <span
           v-for="(tab,index) in tabList"
           :key="index"
-          :class="{active: currentTabIndex==index}"
+          :class="{active: currentTabIndex===index}"
           @click="handleTabClick(tab,index)"
         >{{ tab.title }}</span>
       </dt>
@@ -24,9 +24,6 @@
               <span v-if="item.lastChapter" class="chapter">学习至{{ item.lastChapter }}</span>
             </p>
             <p class="other">
-              <span>笔记{{ item.notes }}</span>
-              <span>代码{{ item.codes }}</span>
-              <span>问答{{ item.questions }}</span>
               <span class="learn-btn">继续学习</span>
             </p>
           </div>

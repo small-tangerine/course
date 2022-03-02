@@ -5,12 +5,6 @@
         <p class="breadcrumb-box">
           <span>课程 \ {{ base.title }}</span>
         </p>
-        <p class="share-box">
-          <span class="iconfont">&#xe716;</span>
-          <span class="iconfont">&#xe646;</span>
-          <span class="iconfont">&#xe6a0;</span>
-          <span class="iconfont">&#xe699;</span>
-        </p>
         <h2 class="title">
           {{ base.title }}
         </h2>
@@ -26,10 +20,8 @@
               </p>
             </div>
             <dl>
-              <dd>难度：{{ base.hard.text }}</dd>
               <dd>时长：{{ base.hours || 0 }}小时</dd>
               <dd>学习人数：{{ base.persons }}</dd>
-              <dd>综合评分：{{ base.score || 100 }}%</dd>
             </dl>
           </div>
         </div>

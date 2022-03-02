@@ -35,6 +35,7 @@ export default {
           this.detail = {}
           this.$message.error(msg)
         }
+        console.log(this.detail)
       }).catch(() => {
         this.detail = {}
         this.$message.error('接口异常')

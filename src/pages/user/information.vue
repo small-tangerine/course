@@ -13,8 +13,8 @@
           {{ item.type }}
         </div>
         <div class="info-content">
-          <template v-if="item.type == '性别'">
-            {{ item.value == 'male' ? '男' : '女' }}
+          <template v-if="item.type === '性别'">
+            {{ item.value === 'male' ? '男' : item.value === 'female' ? '女' :'保密' }}
           </template>
           <template v-else>
             {{ item.value?item.value:'未设置' }}
@@ -39,6 +39,7 @@
           <el-radio-group v-model="editForm.sex">
             <el-radio label="male">男</el-radio>
             <el-radio label="female">女</el-radio>
+            <el-radio label="unknown">未知</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="个性签名">

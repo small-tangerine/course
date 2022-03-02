@@ -18,7 +18,7 @@
           <div class="userinfo-message-wrapper" style="justify-content: center">
             <img :src="userInfo.avatar" alt="">
           </div>
-          <p class="name ellipsis" style="line-height: 3">
+          <p class="name ellipsis" style="text-align: center;line-height: 3">
             {{ userInfo.nickname }}
           </p>
           <div class="fast-nav" @click.stop="showUserInfo = false">

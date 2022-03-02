@@ -1,42 +1,21 @@
 <template>
   <div class="search-wrapper">
-    <input type="text" placeholder="搜索感兴趣的内容" @focus="isFocus=true" @blur="isFocus=false">
-    <i class="iconfont">&#xe63c;</i>
-    <ul v-if="isFocus" class="search-result">
-      <li v-for="(item,index) in result" :key="index" class="result-item">
-        {{ item.value }}
-      </li>
-    </ul>
+    <input v-model="keyword" type="text" placeholder="搜索感兴趣的内容" @focus="isFocus=true" @blur="isFocus=false" @keyup.enter="getSearchList">
+    <i class="iconfont" @click="getSearchList">&#xe63c;</i>
   </div>
 </template>
 <script>
-import { getSearchHistory } from 'api/common.js'
-import { ERR_OK } from 'api/config.js'
 export default {
   data () {
     return {
       isFocus: false,
-      result: []
+      keyword: ''
     }
-  },
-  mounted () {
-    this.getSearchHistoryList()
   },
   methods: {
     // 获取搜索热词
-    getSearchHistoryList () {
-      getSearchHistory().then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.result = data
-        } else {
-          this.result = []
-          this.$message.error(msg)
-        }
-      }).catch(() => {
-        this.result = []
-        this.$message.error('接口异常')
-      })
+    getSearchList () {
+      this.$emit("searchList", this.keyword)
     }
   }
 }
@@ -78,7 +57,7 @@ export default {
       background-color: #fff;
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
-      box-shadow: 0 4px 8px 0px $shadow;
+      box-shadow: 0 4px 8px 0 $shadow;
       .result-item
         padding-left: 20px;
         line-height: 50px;

@@ -3,7 +3,7 @@
     <div class="user-center-container">
       <div class="user-left-nav">
         <div class="user-avatar">
-          <img :src="userInfo.avatar" alt>
+          <img :src="avatar" title="点击上传头像" alt="" @click="editCropper()">
         </div>
         <p class="user-name ellipsis">
           {{ userInfo.nickname }}
@@ -34,32 +34,142 @@
         :userinfo="userInfo"
         @componentClick="handleComponentClick"
       />
+      <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body @open="modalOpened">
+        <el-row>
+          <el-col :xs="24" :md="12" :style="{height: '350px'}">
+            <vue-cropper
+              ref="cropper"
+              :img="options.img"
+              :info="true"
+              :auto-crop="options.autoCrop"
+              :auto-crop-width="options.autoCropWidth"
+              :auto-crop-height="options.autoCropHeight"
+              :fixed-box="options.fixedBox"
+              @realTime="realTime"
+            />
+          </el-col>
+          <el-col :xs="24" :md="12" :style="{height: '350px'}">
+            <div class="avatar-upload-preview">
+              <img v-if="visible" :src="previews.url" :style="previews.img" alt="">
+            </div>
+          </el-col>
+        </el-row>
+        <br>
+        <el-row>
+          <el-col :lg="2" :md="2">
+            <el-upload action="#" :http-request="requestUpload" :show-file-list="false" :before-upload="beforeUpload">
+              <el-button size="small">
+                上传
+                <i class="el-icon-upload el-icon--right" />
+              </el-button>
+            </el-upload>
+          </el-col>
+          <el-col :lg="{span: 1, offset: 2}" :md="2">
+            <el-button icon="el-icon-plus" size="small" @click="changeScale(1)" />
+          </el-col>
+          <el-col :lg="{span: 1, offset: 1}" :md="2">
+            <el-button icon="el-icon-minus" size="small" @click="changeScale(-1)" />
+          </el-col>
+          <el-col :lg="{span: 1, offset: 1}" :md="2">
+            <el-button icon="el-icon-refresh-left" size="small" @click="rotateLeft()" />
+          </el-col>
+          <el-col :lg="{span: 1, offset: 1}" :md="2">
+            <el-button icon="el-icon-refresh-right" size="small" @click="rotateRight()" />
+          </el-col>
+          <el-col :lg="{span: 2, offset: 6}" :md="2">
+            <el-button type="primary" size="small" @click="uploadImg()">提 交</el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import AccountBind from "./account-bind.vue"
 import Information from "./information.vue"
-import Log from "./log.vue"
 import { getUserInfo } from 'api/user.js'
 import { ERR_OK } from 'api/config.js'
 import { mapGetters, mapMutations } from 'vuex'
+import store from "@/store";
+import {VueCropper} from "vue-cropper";
 export default {
   data () {
     return {
       componentName: "account-bind",
       currentNavIndex: 0,
-      navList: []
+      navList: [],
+      // 是否显示弹出层
+      open: false,
+      visible: true,
+      width: undefined,
+      // 弹出层标题
+      title: '修改头像',
+      options: {
+        img: store.getters.userInfo.avatar, // 裁剪图片的地址
+        autoCrop: true, // 是否默认生成截图框
+        autoCropWidth: 200, // 默认生成截图框宽度
+        autoCropHeight: 200, // 默认生成截图框高度
+        fixedBox: true // 固定截图框大小 不允许改变
+      },
+      previews: {}
     };
   },
   created () {
     this.navList = [
       { id: 1, title: "账号绑定", componentName: "account-bind" },
-      { id: 2, title: "个人信息", componentName: "information" },
-      { id: 3, title: "操作记录", componentName: "log" }
+      { id: 2, title: "个人信息", componentName: "information" }
     ];
   },
   methods: {
+    // 打开弹出层结束时的回调
+    modalOpened () {
+      this.visible = true
+    },
+    // 编辑头像
+    editCropper () {
+      this.open = true
+    },
+    // 覆盖默认的上传行为
+    requestUpload () {
+    },
+    // 向左旋转
+    rotateLeft () {
+      this.$refs.cropper.rotateLeft()
+    },
+    // 向右旋转
+    rotateRight () {
+      this.$refs.cropper.rotateRight()
+    },
+    // 图片缩放
+    changeScale (num) {
+      num = num || 1
+      this.$refs.cropper.changeScale(num)
+    },
+    // 上传预处理
+    beforeUpload (file) {
+      if (file.type.indexOf('image/') === -1) {
+        this.$message.error('请上传.JPG、.PNG后缀的图片')
+      } else {
+        this.previews = {}
+        this.options.img = ''
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => {
+          this.options.img = reader.result
+        }
+      }
+    },
+    // 上传图片
+    uploadImg () {
+      this.$refs.cropper.getCropBlob(data => {
+        const formData = new FormData()
+        formData.append('file', data)
+      })
+    },
+    // 实时预览
+    realTime (data) {
+      this.previews = data
+    },
     // 导航点击事件
     handleNavClick (item, index) {
       this.currentNavIndex = index
@@ -68,10 +178,6 @@ export default {
     // 动态组件点击事件
     handleComponentClick (type) {
       switch (type) {
-        case "record":
-          this.componentName = "log"
-          this.currentNavIndex = 2
-          break
         case 'userinfo':
           this.getUserInfoData()
           break
@@ -96,12 +202,15 @@ export default {
     })
   },
   computed: {
-    ...mapGetters(['userInfo'])
+    ...mapGetters(['userInfo']),
+    avatar () {
+      return store.getters.userInfo.avatar
+    }
   },
   components: {
     AccountBind,
     Information,
-    Log
+    VueCropper
   }
 };
 </script>
@@ -172,4 +281,14 @@ export default {
             color: #b5b9bc;
     .user-right-content
       flex: 1;
+.avatar-upload-preview {
+  position: absolute;
+  top: 50%;
+  transform: translate(50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #ccc;
+  overflow: hidden;
+}
 </style>

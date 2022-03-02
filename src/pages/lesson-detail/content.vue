@@ -6,11 +6,11 @@
         v-for="(nav,index) in navList"
         :key="index"
         class="nav-item"
-        :class="{active: currentNavIndex == index}"
+        :class="{active: currentNavIndex === index}"
         @click="currentNavIndex=index"
       >
-        <span v-if="nav.code==0" class="iconfont">&#xe602;</span>
-        <span v-if="nav.code==1" class="iconfont">&#xe7c8;</span>
+        <span v-if="nav.code===0" class="iconfont">&#xe602;</span>
+        <span v-if="nav.code===1" class="iconfont">&#xe7c8;</span>
         <span>{{ nav.title }}</span>
       </li>
     </ul>
@@ -21,14 +21,12 @@
         <component :is="componentName" :catalog="catalogList" />
       </div>
       <div class="info-right">
-        <detail-score :score="data" />
         <detail-teacher :teacher="data.teacher" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import DetailScore from './score.vue'
 import DetailTeacher from './teacher.vue'
 export default {
   props: {
@@ -45,8 +43,7 @@ export default {
   created () {
     // 初始化导航数据
     this.navList = [
-      { title: '课程', code: 0, componentName: 'chapter' },
-      { title: '问答', code: 1, componentName: 'comment' }
+      { title: '课程', code: 0, componentName: 'chapter' }
     ]
   },
   computed: {
@@ -58,10 +55,8 @@ export default {
     }
   },
   components: {
-    DetailScore,
     DetailTeacher,
-    Chapter: () => import('components/chapter/chapter.vue'),
-    Comment: () => import('components/comment/comment.vue')
+    Chapter: () => import('components/chapter/chapter.vue')
   }
 }
 </script>

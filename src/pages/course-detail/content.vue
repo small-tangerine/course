@@ -7,7 +7,7 @@
           v-for="(nav,index) in navList"
           :key="index"
           class="nav-item"
-          :class="{active: index==currentNavIndex}"
+          :class="{active: index===currentNavIndex}"
           @click="currentNavIndex = index"
         >
           {{ nav.title }}
@@ -22,14 +22,12 @@
       </div>
       <div class="information-right">
         <detail-tips :lastest="data" />
-        <detail-tags></detail-tags>
       </div>
     </div>
   </div>
 </template>
 <script>
 import DetailTips from './tips.vue'
-import DetailTags from './tags.vue'
 export default {
   props: {
     data: {
@@ -48,9 +46,7 @@ export default {
   created () {
     // 初始化导航数据
     this.navList = [
-      { title: '课程章节', componentName: 'chapter' },
-      { title: '问答', componentName: 'question-answer' },
-      { title: '用户评价', componentName: 'comment' }
+      { title: '课程', componentName: 'chapter' }
     ]
   },
   computed: {
@@ -63,10 +59,7 @@ export default {
   },
   components: {
     DetailTips,
-    DetailTags,
-    Chapter: () => import('components/chapter/chapter.vue'),
-    QuestionAnswer: () => import('components/question-answer/question-answer.vue'),
-    Comment: () => import('components/comment/comment.vue')
+    Chapter: () => import('components/chapter/chapter.vue')
   }
 }
 </script>

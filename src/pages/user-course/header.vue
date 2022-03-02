@@ -21,22 +21,6 @@
             <span>{{ userInfo.hour }}h</span>
             <span>学习时长</span>
           </dd>
-          <dd>
-            <span>{{ userInfo.exp }}</span>
-            <span>经验</span>
-          </dd>
-          <dd>
-            <span>{{ userInfo.integral }}</span>
-            <span>积分</span>
-          </dd>
-          <dd>
-            <span>{{ userInfo.follow }}</span>
-            <span>关注</span>
-          </dd>
-          <dd>
-            <span>{{ userInfo.fans }}</span>
-            <span>粉丝</span>
-          </dd>
           <dt>
             <router-link class="setting" to="/user">
               <i class="iconfont">&#xe680;</i>个人设置

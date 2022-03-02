@@ -23,19 +23,7 @@
         {{ item.title }}
       </dd>
     </dl>
-
-    <dl>
-      <dt>难度：</dt>
-      <dd
-        v-for="(diff,index) in diffList"
-        :key="index"
-        :class="{active: index===diffIndex}"
-        @click="handleNavClick('diff', index)"
-      >
-        {{ diff.title }}
-      </dd>
-    </dl>
-  </div> 
+  </div>
 </template>
 <script>
 export default {
@@ -51,19 +39,8 @@ export default {
     return {
       directionIndex: 0,
       categoryIndex: 0,
-      diffIndex: 0,
-      diffList: [],
       currentIndex: 0
     }
-  },
-  created () {
-    this.diffList = [
-      { title: '全部', code: '' },
-      { title: '入门', code: 0 },
-      { title: '初级', code: 1 },
-      { title: '中级', code: 2 },
-      { title: '高级', code: 3 }
-    ]
   },
   methods: {
     // 导航点击事件
@@ -75,9 +52,6 @@ export default {
           break
         case 'category':
           this.categoryIndex = index
-          break
-        case 'diff':
-          this.diffIndex = index
           break
       }
       this.$emit('update:params', this.emitParams)
@@ -131,11 +105,9 @@ export default {
     emitParams () {
       const direction = this.directionList[this.directionIndex]
       const category = this.currentLabels[this.categoryIndex].title
-      const diff = this.diffList[this.diffIndex]
       return {
         direction: direction.title === '全部' ? '' : direction.code,
-        category: category === '全部' ? '' : category,
-        diff: diff.title === '全部' ? '' : diff.code
+        category: category === '全部' ? '' : category
       }
     }
   }

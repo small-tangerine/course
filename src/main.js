@@ -17,6 +17,10 @@ import {
   MessageBox,
   Pagination,
   Dialog,
+  Button,
+    Row,
+    Col,
+    Upload,
   Scrollbar
 } from 'element-ui'
 Vue.use(Icon)
@@ -31,6 +35,10 @@ Vue.use(Checkbox)
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Scrollbar)
+Vue.use(Button)
+Vue.use(Upload)
+Vue.use(Row)
+Vue.use(Col)
 
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

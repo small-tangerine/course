@@ -29,7 +29,7 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" prop="action.text" width="100" />
-          <el-table-column label="备注" prop="remark" />        
+          <el-table-column label="备注" prop="remark" />
         </el-table>
       </div>
     </div>
@@ -70,7 +70,7 @@
               v-for="(item,index) in rechargeWay"
               :key="index"
               class="recharge-item way"
-              :class="{active: index==rechargeWayIndex}"
+              :class="{active: index===rechargeWayIndex}"
               @click="rechargeWayIndex=index"
             >
               <img :src="item.url" alt="">
@@ -84,9 +84,6 @@
       <div class="form-recharge-btn" :class="{'is-disabled': isLoading}" @click="handleFormRechargeClick">
         立即充值
       </div>
-      <p class="recharge-argement">
-        点击立即充值则视为您已同意 <span>《慕课网用户协议》</span>
-      </p>
     </mooc-dialog>
   </div>
 </template>

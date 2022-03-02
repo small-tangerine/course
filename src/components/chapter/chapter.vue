@@ -4,24 +4,18 @@
       {{ catalog.introduction }}
     </div>
     <div v-for="(item,index) in catalog.chapter" :key="index" class="chapter-item">
-      <h2 class="chapter-title">
-        {{ item.title }}
-      </h2>
-      <p class="chapter-desc">
-        {{ item.introduction }}
-      </p>
       <ul>
         <li v-for="(term, index) in item.term" :key="index" class="term-item">
           <p>
             <span class="iconfont play">&#xe615;</span>
             <span>{{ term.title }}({{ term.seconds | filterSecond }})</span>
             <span class="right">
-              <!-- <i v-if="term.rate == 100" class="iconfont complete">&#xe60f;</i>
-              <span v-else-if="term.rate > 0 && term.rate < 100" class="doning">
+              <i v-if="term.rate === 1" class="iconfont complete">&#xe60f;</i>
+              <span v-else-if="term.rate === 2" class="doning">
                 最近学习
                 <i class="iconfont">&#xe601;</i>
-              </span> -->
-              <i class="iconfont ready">&#xe6e8;</i>
+              </span>
+              <i v-else class="iconfont ready">&#xe6e8;</i>
             </span>
           </p>
         </li>

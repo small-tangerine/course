@@ -1,15 +1,9 @@
 <template>
   <div class="account-bind">
-    <p ref="loginRecord" class="last-login-record">
-      <span>上次登录时间：{{ userinfo.lastLoginTime }}</span>
-      <span>地点：{{ userinfo.lastLoginCity }}</span>
-      <span class="record-btn" @click="handleRecordClick">查看最近操作记录</span>
-      <i class="iconfont" @click="handleCloseRecord">&#xe619;</i>
-    </p>
     <dl>
       <dt class="bind-title">
         账号绑定
-        <span class="bind-rate">完成 <strong>5/5</strong></span>
+        <span class="bind-rate">完成 <strong>5/3</strong></span>
         <mooc-button class="bind-btn" size="mini" round @click="handleEditClick">
           <i class="iconfont">&#xe600;</i>编辑
         </mooc-button>
@@ -72,7 +66,6 @@
 import { updateUserBinds } from 'api/user.js'
 import { ERR_OK } from 'api/config.js'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
-import crypto from 'crypto-js'
 export default {
   props: {
     userinfo: {
@@ -117,16 +110,6 @@ export default {
     }
   },
   methods: {
-    // 关闭记录
-    handleCloseRecord () {
-      const loginRecord = this.$refs.loginRecord
-      loginRecord.style.height = 0
-      loginRecord.style.opacity = 0
-    },
-    // 记录点击
-    handleRecordClick () {
-      this.$emit('componentClick', 'record')
-    },
     // 编辑账号绑定信息
     handleEditClick () {
       this.dialogVisible = true
@@ -151,10 +134,8 @@ export default {
     // 保存账号绑定信息
     handleSaveClick () {
       this.isLoading = true
-      const parmas = Object.assign({}, this.editForm, {
-        password: crypto.MD5(this.editForm.password).toString()
-      })
-      updateUserBinds(parmas).then(res => {
+      const params = Object.assign({}, this.editForm)
+      updateUserBinds(params).then(res => {
         this.isLoading = false
         const { code, msg } = res
         if (code === ERR_OK) {

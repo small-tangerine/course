@@ -4,23 +4,21 @@
       <el-form-item prop="username">
         <el-input ref="username" v-model.trim="loginForm.username" placeholder="请输入手机号/邮箱" clearable />
       </el-form-item>
-      <el-form-item prop="password">
-        <el-input ref="passowrd" v-model.trim="loginForm.password" placeholder="请输入密码" show-password />
+      <el-form-item v-if="index === 2" prop="verifyCode" class="code">
+        <el-input v-model.trim="loginForm.verifyCode" placeholder="请输入验证码" />
+        <el-button :disabled="isDisabled" @click="sendCode">{{ buttonText }}</el-button>
       </el-form-item>
-      <el-form-item v-if="index === 1" prop="ckpassword">
-        <el-input v-model.trim="loginForm.ckpassword" placeholder="请再次输入密码" show-password />
+      <el-form-item prop="password">
+        <el-input ref="password" v-model.trim="loginForm.password" placeholder="请输入密码" show-password />
+      </el-form-item>
+      <el-form-item v-if="index !== 0" prop="checkPassword">
+        <el-input v-model.trim="loginForm.checkPassword" placeholder="请再次输入密码" show-password />
       </el-form-item>
       <el-form-item class="auto-login-item">
-        <template v-if="index === 0">
-          <div class="auto-login-btn-box">
-            <span>忘记密码</span>
-          </div>
-        </template>
       </el-form-item>
     </el-form>
     <button
       class="login-btn"
-
       @click="handleValidateForm"
     >
       {{ btnText }}
@@ -36,7 +34,7 @@ export default {
     index: Number
   },
   data () {
-    const checkPassword = (rule, value, callback) => {
+    const checheckPassword = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请再次输入密码'))
       } else if (value !== this.loginForm.password) {
@@ -52,18 +50,25 @@ export default {
       password: [
         { required: true, message: '请输入密码', trigger: 'blur' }
       ],
-      ckpassword: [
+      checkPassword: [
         { required: true, message: '请再次输入密码', trigger: 'blur' },
-        { validator: checkPassword, trigger: 'blur' }
+        { validator: checheckPassword, trigger: 'blur' }
+      ],
+      verifyCode: [
+        { required: true, message: '请输入验证码', trigger: 'blur' }
       ]
     }
     return {
       isLoading: false,
       rules: rules,
+      isDisabled: false,
+      flag: true,
+      buttonText: '发送验证码',
       loginForm: {
         username: '',
         password: '',
-        ckpassword: ''
+        checkPassword: '',
+        verifyCode:''
       }
     }
   },
@@ -88,11 +93,34 @@ export default {
         }
       })
     },
+    // <!--发送验证码-->
+    sendCode () {
+      this.$refs['loginForm'].validateField('username', valid => {
+        console.log(valid)
+        if (!valid) {
+          let time = 60
+          this.buttonText = '重新发送 ' + time
+          this.isDisabled = true
+          if (this.flag) {
+            this.flag = false;
+            let timer = setInterval(() => {
+              time--;
+              this.buttonText = '重新发送 ' + time
+              if (time === 0) {
+                clearInterval(timer);
+                this.buttonText = '重新发送'
+                this.isDisabled = false
+                this.flag = true;
+              }
+            }, 1000)
+          }
+        }
+      })
+    },
     // 按钮点击
     handleBtnClick () {
       const params = {
         username: this.loginForm.username,
-        // password: crypto.MD5(this.loginForm.password).toString()
         password: this.loginForm.password
       }
       // 判断是登陆还是注册
@@ -104,7 +132,7 @@ export default {
         let { code, data, msg } = res
         if (code !== ERR_OK) {
           this.loginForm.password = ''
-          this.loginForm.ckpassword = ''
+          this.loginForm.checkPassword = ''
           this.$message.error(msg)
           return false
         }
@@ -141,8 +169,10 @@ export default {
       let text = ''
       if (this.index === 0) {
         text = this.isLoading ? '登录中...' : '登录'
-      } else {
+      } else if (this.index === 1) {
         text = this.isLoading ? '注册中...' : '注册'
+      }else {
+        text = this.isLoading ? '提交中...' : '重置密码'
       }
       return text
     }
@@ -154,4 +184,11 @@ export default {
 </script>
 <style lang="stylus" scoped>
   @import '~assets/stylus/login-form.styl';
+  .code >>> .el-form-item__content {
+    display: flex;
+  }
+  .code button {
+    margin-left: 5px;
+    border :none!important;
+  }
 </style>

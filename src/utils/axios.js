@@ -26,6 +26,7 @@ service.interceptors.response.use(
       return Promise.reject('网络异常!')
     }
     if (data.code === 401) {
+        store.commit('login/SET_LOGIN_ACTION', 'login')
       store.commit('login/SET_SHOW_LOGIN', true)
       store.dispatch('login/logout')
       return Promise.resolve({

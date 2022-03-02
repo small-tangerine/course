@@ -23,21 +23,12 @@ module.exports = {
   devServer: {
     port: 3400,
     proxy: {
-      // '/api/v1': {
-      //   target: 'http://localhost:4300',
-      //   pathRewrite: {
-      //     '/api/v1': ''
-      //   }
-      // },
       '/api/v1': {
         target: 'http://localhost:4300',
         pathRewrite: {
           '/api/v1': ''
         }
       },
-      '/mock': {
-        target: 'http://localhost:4300'
-      }
     }
   },
   lintOnSave: true

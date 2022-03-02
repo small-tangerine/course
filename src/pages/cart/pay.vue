@@ -28,7 +28,7 @@
           </dd>
         </template>
       </dl>
-      
+
       <div class="pay-way-container">
         <!-- 支付方式 -->
         <div class="way-list">
@@ -71,9 +71,6 @@
             <button class="pay-btn" :class="{'is-disabled': isDisabled }" @click="handlePayClick">
               立即支付
             </button>
-            <p class="tips">
-              付款有问题？点我
-            </p>
           </div>
         </div>
       </div>
@@ -108,7 +105,7 @@ export default {
         "img": "https://order.imooc.com/static/module/pay/center/img/pay_s.png"
       },
       {
-        
+
         "type": 2,
         "name": "我的余额",
         "img": "https://order.imooc.com/static/module/pay/center/img/yue.png"

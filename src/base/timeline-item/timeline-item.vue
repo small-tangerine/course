@@ -22,7 +22,7 @@
     <!-- content -->
     <div class="mooc-timeline-item-wrapper">
       <div
-        v-if="!hideTimestamp && placement == 'top'"
+        v-if="!hideTimestamp && placement === 'top'"
         class="mooc-timeline-item-timestamp is-top"
       >
         {{ timestamp }}
@@ -31,7 +31,7 @@
         <slot></slot>
       </div>
       <div
-        v-if="!hideTimestamp && placement == 'bottom'"
+        v-if="!hideTimestamp && placement === 'bottom'"
         class="mooc-timeline-item-timestamp is-bottom"
       >
         {{ timestamp }}

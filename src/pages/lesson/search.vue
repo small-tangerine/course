@@ -5,8 +5,8 @@
       <img class="sub-img" src="https://coding.imooc.com/static/module/index/img/header-icon2.png?222" height="96" alt="">
       <div class="search-box">
         <div class="input-box">
-          <input type="text" placeholder="搜索感兴趣的实战课程内容" class="input">
-          <div class="icon-box">
+          <input v-model="keyword" type="text" placeholder="搜索感兴趣的实战课程内容" class="input" @keyup.enter="getSearchList">
+          <div class="icon-box" @click="getSearchList">
             <i class="iconfont">&#xe63c;</i>
           </div>
         </div>
@@ -16,12 +16,17 @@
 </template>
 <script>
 export default {
-  props: {
-    hot: {
-      type: Array,
-      default () {
-        return []
-      }
+  data () {
+    return {
+      isFocus: false,
+      keyword:''
+    }
+  },
+  methods: {
+    // 获取搜索热词
+    getSearchList () {
+      alert(this.keyword)
+      this.$emit("searchList", this.keyword)
     }
   }
 }
