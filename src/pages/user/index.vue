@@ -194,12 +194,8 @@ export default {
       this.componentName = item.componentName
     },
     // 动态组件点击事件
-    handleComponentClick (type) {
-      switch (type) {
-        case 'userinfo':
-          this.getUserInfoData()
-          break
-      }
+    handleComponentClick (data) {
+      this.setUserInfo(data)
     },
     // 获取用户详细信息
     getUserInfoData () {

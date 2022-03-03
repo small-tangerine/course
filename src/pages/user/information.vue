@@ -54,8 +54,9 @@
   </div>
 </template>
 <script>
-import { updateUserInfo } from 'api/user.js'
-import { ERR_OK } from 'api/config.js'
+import {updateUserInfo} from "../../api/user";
+import {ERR_OK} from "../../api/config";
+import {mapMutations} from "vuex";
 export default {
   props: {
     userinfo: {
@@ -105,11 +106,11 @@ export default {
       this.isLoading = true
       updateUserInfo(this.editForm).then(res => {
         this.isLoading = false
-        const { code, msg } = res
-        if (code === ERR_OK) {
+        const { error, msg, data} = res
+        if (error === ERR_OK) {
           this.dialogVisible = false
           this.$message.success(msg)
-          this.$emit('componentClick', 'userinfo')
+          this.$emit('componentClick', data)
         } else {
           this.$message.error(msg)
         }
@@ -119,6 +120,10 @@ export default {
       })
     }
   },
+  // vuex
+  ...mapMutations('login', {
+    'setUserInfo': 'SET_USER_INFO',
+  }),
   watch: {
     userinfo: {
       handler () {

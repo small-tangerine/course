@@ -3,7 +3,7 @@
     <dl>
       <dt class="bind-title">
         账号绑定
-        <span class="bind-rate">完成 <strong>5/3</strong></span>
+        <span class="bind-rate">完成 <strong>{{ complete }}/3</strong></span>
         <mooc-button class="bind-btn" size="mini" round @click="handleEditClick">
           <i class="iconfont">&#xe600;</i>编辑
         </mooc-button>
@@ -45,14 +45,14 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model.trim="editForm.email" placeholder="请输入邮箱"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
+        <el-form-item label="手机号" prop="mobile">
           <el-input v-model.trim="editForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model.trim="editForm.password" type="password" show-password placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="ckpassword">
-          <el-input v-model.trim="editForm.ckpassword" type="password" show-password placeholder="请再次输入密码"></el-input>
+        <el-form-item label="确认密码" prop="checkPassword">
+          <el-input v-model.trim="editForm.checkPassword" type="password" show-password placeholder="请再次输入密码"></el-input>
         </el-form-item>
       </el-form>
       <template slot="footer">
@@ -63,8 +63,8 @@
   </div>
 </template>
 <script>
-import { updateUserBinds } from 'api/user.js'
-import { ERR_OK } from 'api/config.js'
+import {updateUserBinds} from "../../api/user";
+import {ERR_OK} from "../../api/config";
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 export default {
   props: {
@@ -73,40 +73,33 @@ export default {
     }
   },
   data () {
-    const validatePassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.editForm.password) {
-        callback(new Error('两次输入的密码不一致'))
-      } else {
-        callback()
-      }
-    }
     const rules = {
       email: [
         { required: true, message: '请输入邮箱', trigger: 'blur' }
       ],
-      phone: [
+      mobile: [
         { required: true, message: '请输入手机号', trigger: 'blur' }
-      ],
-      password: [
-        { required: true, message: '请输入密码', trigger: 'blur' }
-      ],
-      ckpassword: [
-        { required: true, message: '请再次输入密码', trigger: 'blur' },
-        { validator: validatePassword, trigger: 'blur' }
       ]
     }
     return {
       rules: rules,
       isLoading: false,
+      complete: 1,
       dialogVisible: false,
       editForm: {
         email: '',
         mobile: '',
         password: '',
-        ckpassword: ''
+        checkPassword: ''
       }
+    }
+  },
+  mounted () {
+    if (this.userInfo.email){
+      this.complete++
+    }
+    if (this.userInfo.mobile){
+      this.complete++
     }
   },
   methods: {
@@ -117,7 +110,7 @@ export default {
         email: this.userInfo.email,
         mobile: this.userInfo.mobile,
         password: '',
-        ckpassword: ''
+        checkPassword: ''
       }
       this.$nextTick(() => {
         this.$refs.editForm.resetFields()
@@ -135,18 +128,28 @@ export default {
     handleSaveClick () {
       this.isLoading = true
       const params = Object.assign({}, this.editForm)
+      if (!this.editForm.password){
+        params.password = undefined
+      }
+      if (!this.editForm.checkPassword){
+        params.checkPassword = undefined
+      }
       updateUserBinds(params).then(res => {
         this.isLoading = false
-        const { code, msg } = res
-        if (code === ERR_OK) {
+        const { error, msg, data} = res
+        if (error === ERR_OK) {
           this.$message.success(msg)
           this.dialogVisible = false
-          // 修改成功后，退出登录，调整到首页弹窗登录框
-          this.timer = setTimeout(() => {
-            this.logout()
-            this.$router.replace('/home')
-            this.showLogin(true)
-          }, 500)
+          const {isUpdateUsername} = data
+          if (isUpdateUsername === 1)
+          {
+            // 修改成功后，退出登录，调整到首页弹窗登录框
+            this.timer = setTimeout(() => {
+              this.logout()
+              this.$router.replace('/home')
+              this.showLogin(true)
+            }, 500)
+          }
         } else {
           this.$message.error(msg)
         }

@@ -24,12 +24,12 @@ export function getUserLogs (params) {
 
 // 编辑账号绑定信息
 export function updateUserBinds (data) {
-  return axios.post('/api/v1/user/update/binds', data)
+  return axios.post('/api/v2/user/update-account-info', data)
 }
 
 // 编辑用户个人信息
 export function updateUserInfo (data) {
-  return axios.post('/api/v1/user/update/info', data)
+  return axios.post('/api/v2/user/update-base-info', data)
 }
 
 // 编辑用户个人信息
