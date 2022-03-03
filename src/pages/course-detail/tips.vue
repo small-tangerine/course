@@ -16,7 +16,7 @@
         上次学习至：{{ lastest.chapter }}
       </p>
     </div>
-    
+
     <div class="tips-btn">
       {{ lastest.percent > 0 ? '继续学习' : '开始学习' }}
     </div>

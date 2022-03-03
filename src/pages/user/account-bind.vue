@@ -23,7 +23,7 @@
         <div class="bind-introduction">
           <p class="bind-title">
             <span class="bind-type">手机</span>
-            {{ userinfo.phone }}
+            {{ userinfo.mobile }}
           </p>
           <p class="bind-subtitle">可用手机号加密码登录慕课网，可通过手机号找回密码</p>
         </div>
@@ -46,7 +46,7 @@
           <el-input v-model.trim="editForm.email" placeholder="请输入邮箱"></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
-          <el-input v-model.trim="editForm.phone" placeholder="请输入手机号"></el-input>
+          <el-input v-model.trim="editForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model.trim="editForm.password" type="password" show-password placeholder="请输入密码"></el-input>
@@ -103,7 +103,7 @@ export default {
       dialogVisible: false,
       editForm: {
         email: '',
-        phone: '',
+        mobile: '',
         password: '',
         ckpassword: ''
       }
@@ -115,7 +115,7 @@ export default {
       this.dialogVisible = true
       this.editForm = {
         email: this.userInfo.email,
-        phone: this.userInfo.phone,
+        mobile: this.userInfo.mobile,
         password: '',
         ckpassword: ''
       }

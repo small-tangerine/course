@@ -27,9 +27,9 @@ export function throttle (fn, interval = 500) {
 
 // 函数防抖
 export function debounce (fn, delay) {
-  var timer = null;
+  let timer = null;
   return function () {
-    var context = this;
+    const context = this;
     if(timer) {
       clearTimeout(timer);
     }
@@ -98,4 +98,8 @@ export function normalSeconds (seconds = 0) {
     second = `0${second}`
   }
   return `${minutes}:${second}`
+}
+
+export function subUrlFileName (url){
+ return  url.substring(url.lastIndexOf("/") + 1);
 }

@@ -29,6 +29,12 @@ module.exports = {
           '/api/v1': ''
         }
       },
+      '/api/v2': {
+        target: 'http://localhost:8082',
+        pathRewrite: {
+          '/api/v2': ''
+        }
+      },
     }
   },
   lintOnSave: true

@@ -10,7 +10,7 @@
             {{ userInfo.nickname }}
           </p>
           <p class="other">
-            <span>{{ userInfo.sex === 'male' ? '男' : '女' }}</span>
+            <span>{{ userInfo.sex === 'male' ? '男' : userInfo.sex === 'female' ? '女':'保密' }}</span>
             <span>{{ userInfo.job }}</span>
           </p>
         </div>
@@ -18,7 +18,7 @@
       <div class="right">
         <dl>
           <dd>
-            <span>{{ userInfo.hour }}h</span>
+            <span>{{ userInfo.learnHour }}h</span>
             <span>学习时长</span>
           </dd>
           <dt>
@@ -36,11 +36,6 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters(['userInfo'])
-  },
-  methods: {
-    handleSettingClick () {
-      this.$router.push('/user')
-    }
   }
 }
 </script>

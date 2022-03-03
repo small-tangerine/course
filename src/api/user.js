@@ -32,6 +32,11 @@ export function updateUserInfo (data) {
   return axios.post('/api/v1/user/update/info', data)
 }
 
+// 编辑用户个人信息
+export function updateUserAvatar (data) {
+  return axios.post('/api/v2/avatar/upload', data)
+}
+
 // 获取用户课程信息接口
 export function getUserCourse (params) {
   return axios.get('/api/v1/user/course/list', {

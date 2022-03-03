@@ -9,7 +9,7 @@
           {{ userInfo.nickname }}
         </p>
         <p class="user-id">
-          ID: {{ userInfo.id }}
+          ID: {{ userInfo.uid }}
         </p>
         <dl class="user-nav">
           <dt class="nav-title">
@@ -87,17 +87,20 @@
 <script>
 import AccountBind from "./account-bind.vue"
 import Information from "./information.vue"
-import { getUserInfo } from 'api/user.js'
+import { getUserInfo, updateUserAvatar } from 'api/user.js'
 import { ERR_OK } from 'api/config.js'
 import { mapGetters, mapMutations } from 'vuex'
 import store from "@/store";
 import {VueCropper} from "vue-cropper";
+import {subUrlFileName} from "utils/utils";
+
 export default {
   data () {
     return {
       componentName: "account-bind",
       currentNavIndex: 0,
       navList: [],
+      fileName: subUrlFileName(store.getters.userInfo.avatar),
       // 是否显示弹出层
       open: false,
       visible: true,
@@ -120,6 +123,10 @@ export default {
       { id: 2, title: "个人信息", componentName: "information" }
     ];
   },
+  // vuex
+  ...mapMutations('login', {
+    'setUserInfo': 'SET_USER_INFO',
+  }),
   methods: {
     // 打开弹出层结束时的回调
     modalOpened () {
@@ -148,8 +155,10 @@ export default {
     // 上传预处理
     beforeUpload (file) {
       if (file.type.indexOf('image/') === -1) {
-        this.$message.error('请上传.JPG、.PNG后缀的图片')
+        this.$message.error('请上传正确的图片')
       } else {
+        console.log(file)
+        this.fileName = file.name
         this.previews = {}
         this.options.img = ''
         const reader = new FileReader()
@@ -163,11 +172,20 @@ export default {
     uploadImg () {
       this.$refs.cropper.getCropBlob(data => {
         const formData = new FormData()
-        formData.append('file', data)
+        formData.append('image', data, this.fileName)
+        updateUserAvatar(formData).then(res => {
+          if (res.error === 0) {
+            this.$message.success(res.msg)
+            this.open = false
+            // 缓存用户数据
+            this.setUserInfo(res.data)
+          }
+        })
       })
     },
     // 实时预览
     realTime (data) {
+      console.log(data)
       this.previews = data
     },
     // 导航点击事件
