@@ -62,11 +62,12 @@ export default {
       }
       let categoryList = []
       this.nav.forEach(nav => {
-        const findIndex = categoryList.findIndex(item => item.title === nav.type.text)
+        const findIndex = categoryList.findIndex(item => item.title === nav.parentTitle)
         if (findIndex  === -1) {
           categoryList.push({
-            title: nav.type.text,
-            code: nav.type.code,
+            title: nav.parentTitle,
+            code: nav.parentId,
+            sort: nav.parentDisplayOrder,
             list: [nav]
           })
         } else {
@@ -75,7 +76,12 @@ export default {
       })
       categoryList.unshift({
         title: '全部',
+        code: 0,
+        sort: -1,
         list: []
+      })
+      categoryList.sort(function (a, b) {
+        return a.sort - b.sort
       })
       return categoryList
     },
@@ -87,7 +93,12 @@ export default {
       } else if (currentCategory.title !== '全部') {
         ret = currentCategory.list.slice()
         ret.unshift({
-          title: '不限'
+          title: '不限',
+          id: 0,
+          displayOrder: -1
+        })
+        ret.sort(function (a, b) {
+          return a.displayOrder - b.displayOrder
         })
         return ret
       } else {
@@ -95,17 +106,22 @@ export default {
           return prev.concat(curr)
         }, [])
         ret.unshift({
-          title: '不限'
+          title: '不限',
+          id: 0,
+          displayOrder: -1
+        })
+        ret.sort(function (a, b) {
+          return a.id - b.id
         })
         return ret
       }
     },
     emitParams () {
       const category = this.categoryList[this.currentCategoryIndex]
-      const label = this.currentLabels[this.currentLabelIndex].title
+      const label = this.currentLabels[this.currentLabelIndex]
       return {
-        category: category.title === '全部' ? '' : category.code,
-        label: label === '不限' ? '' : label
+        category: category.code === 0 ? undefined : category.code,
+        label: label.id === 0 ? undefined : label.id
       }
     }
   }

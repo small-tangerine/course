@@ -5,7 +5,7 @@
       <span
         v-for="(item,index) in filterList"
         :key="index"
-        :class="{active: index == filterIndex}"
+        :class="{active: index === filterIndex}"
         @click="handleFilterClick(item, index)"
       >{{ item.title }}</span>
     </div>
@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import Empty from 'components/empty/empty.vue'
+import Empty from '../../components/empty/empty'
 export default {
   props: {
     list: {
@@ -62,9 +62,9 @@ export default {
   },
   created () {
     this.filterList = [
-      { title: '默认排序', code: '' },
-      { title: '最新', code: '-time' },
-      { title: '最热', code: '-persons' }
+      { title: '默认排序', code: undefined },
+      { title: '最新', code: 'time' },
+      { title: '最热', code: 'persons' }
     ]
   },
   methods: {

@@ -1,8 +1,8 @@
-import axios from 'utils/axios.js'
+import axios from '../utils/axios.js'
 
 // 课程导航
 export function getLessonNav () {
-  return axios.get('/api/v1/label/list')
+  return axios.get('/api/v2/category/list')
 }
 
 // 课程列表

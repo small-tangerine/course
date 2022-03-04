@@ -23,13 +23,13 @@
 import CourseSearch from './search.vue'
 import CourseNav from './nav.vue'
 import CourseList from './list.vue'
-import Pagination from 'components/pagination/pagination.vue'
-import { getLessonNav, getLessonList } from 'api/lesson.js'
-import { ERR_OK } from 'api/config.js'
+import Pagination from '../../components/pagination/pagination'
+import { getLessonNav, getLessonList } from '../../api/lesson'
+import { ERR_OK } from '../../api/config'
 export default {
   data () {
     return {
-      sort: '',
+      sort: undefined,
       params: {},
       navList: [],
       courseList: [],
@@ -51,8 +51,8 @@ export default {
     // 获取课程导航信息
     getCourseNavList () {
       getLessonNav().then(res => {
-        let { code, data } = res
-        if (code === ERR_OK) {
+        let { error, data } = res
+        if (error === ERR_OK) {
           this.navList = data
         } else {
           this.navList = []
@@ -69,10 +69,9 @@ export default {
         page: this.page,
         size: this.size,
         keyword:keyword,
-        type: 0,
+        type: 1,
         category: this.params.direction,
         label: this.params.category,
-        diff: this.params.diff,
         sort: this.sort
       }
       getLessonList(params).then(res => {

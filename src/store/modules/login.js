@@ -1,7 +1,7 @@
-import axios from 'utils/axios.js'
-import { ERR_OK } from 'api/config.js'
+import axios from '../../utils/axios'
+import { ERR_OK } from '../../api/config'
 import * as types from '../mutation-types.js'
-import { getUserInfo, setUserInfo, removeUserInfo } from 'utils/cache.js'
+import { getUserInfo, setUserInfo, removeUserInfo } from '../../utils/cache'
 const state = {
   showLogin: false,
   action: '',

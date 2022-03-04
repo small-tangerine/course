@@ -57,11 +57,11 @@
   </div>
 </template>
 <script>
-import Empty from 'components/empty/empty.vue'
-import {addCart} from 'api/cart.js'
-import {ERR_OK} from 'api/config.js'
+import Empty from '../../components/empty/empty'
+import {addCart} from '../../api/cart'
+import {ERR_OK} from '../../api/config'
 import {mapGetters} from "vuex";
-import store from "@/store";
+import store from "../../store";
 
 export default {
   props: {
@@ -82,9 +82,9 @@ export default {
   },
   created () {
     this.filter = [
-      {title: '默认排序', code: ''},
-      {title: '最新', code: '-time'},
-      {title: '销量', code: '-persons'}
+      {title: '默认排序', code: undefined},
+      {title: '最新', code: 'time'},
+      {title: '销量', code: 'persons'}
     ]
   },
   computed: {

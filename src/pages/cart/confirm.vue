@@ -45,9 +45,9 @@
 </template>
 <script>
 import CartHeader from './cart-header.vue'
-import { getCheckLessons, removeCheckLessons } from 'utils/cache.js'
-import { createOrder } from 'api/order.js'
-import { ERR_OK } from 'api/config.js'
+import {getCheckLessons, removeCheckLessons} from "../../utils/cache";
+import {createOrder} from "../../api/order";
+import {ERR_OK} from "../../api/config";
 export default {
   data () {
     return {
@@ -61,11 +61,11 @@ export default {
     // 提交订单
     handleSubmitOrder () {
       const params = {
-        list: this.cartList
+        cartsList: this.cartList
       }
       createOrder(params).then(res => {
-        const { code, data, msg } = res
-        if (code === ERR_OK) {
+        const { error, data, msg } = res
+        if (error === ERR_OK) {
           removeCheckLessons()
           this.$router.push(`/cart/pay/${data.code}`)
         } else {

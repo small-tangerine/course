@@ -26,7 +26,7 @@ export function getUserBillList (params) {
 
 // 生成订单
 export function createOrder (data) {
-  return axios.post('/api/v1/order/create', data)
+  return axios.post('/api/v2/order/create', data)
 }
 
 // 订单详情

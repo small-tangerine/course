@@ -64,11 +64,12 @@ export default {
       }
       let categoryList = []
       this.list.forEach(nav => {
-        const findIndex = categoryList.findIndex(item => item.title === nav.type.text)
-        if (findIndex  === -1) {
+        const findIndex = categoryList.findIndex(item => item.title === nav.parentTitle)
+        if (findIndex === -1) {
           categoryList.push({
-            title: nav.type.text,
-            code: nav.type.code,
+            title: nav.parentTitle,
+            code: nav.parentId,
+            sort: nav.parentDisplayOrder,
             list: [nav]
           })
         } else {
@@ -77,7 +78,12 @@ export default {
       })
       categoryList.unshift({
         title: '全部',
+        code: 0,
+        sort: -1,
         list: []
+      })
+      categoryList.sort(function (a, b) {
+        return a.sort - b.sort
       })
       return categoryList
     },
@@ -89,7 +95,12 @@ export default {
       } else if (currentCategory.title !== '全部') {
         ret = currentCategory.list.slice()
         ret.unshift({
-          title: '全部'
+          title: '全部',
+          id: 0,
+          displayOrder: -1
+        })
+        ret.sort(function (a, b) {
+          return a.displayOrder - b.displayOrder
         })
         return ret
       } else {
@@ -97,49 +108,58 @@ export default {
           return prev.concat(curr)
         }, [])
         ret.unshift({
-          title: '全部'
+          title: '全部',
+          id: 0,
+          displayOrder: -1,
+        })
+        ret.sort(function (a, b) {
+          return a.id - b.id
         })
         return ret
       }
     },
     emitParams () {
       const direction = this.directionList[this.directionIndex]
-      const category = this.currentLabels[this.categoryIndex].title
+      const category = this.currentLabels[this.categoryIndex]
       return {
-        direction: direction.title === '全部' ? '' : direction.code,
-        category: category === '全部' ? '' : category
+        direction: direction.code === 0 ? undefined : direction.code,
+        category: category.id === 0 ? undefined : category.id
       }
     }
   }
 }
 </script>
 <style lang="stylus" scoped>
-  @import '~assets/stylus/variables.styl';
-  .course-nav
-    dl
-      position: relative;
-      padding: 16px 0 10px 52px;
-      border-bottom: 1px solid $border-three-color;
-      font-size: 14px;
-      dt
-        position: absolute;
-        left: 0;
-        top: 22px;
-        color: $font-first-color;
+@import '~assets/stylus/variables.styl';
+.course-nav
+  dl
+    position: relative;
+    padding: 16px 0 10px 52px;
+    border-bottom: 1px solid $border-three-color;
+    font-size: 14px;
+
+    dt
+      position: absolute;
+      left: 0;
+      top: 22px;
+      color: $font-first-color;
+      font-weight: 700;
+
+    dd
+      display: inline-block;
+      padding: 0 10px;
+      margin: 0 5px 10px 0;
+      height: 30px;
+      line-height: 30px;
+      color: $font-first-color;
+      cursor: pointer;
+
+      &.active
+        background-color: rgba(242, 13, 13, .06);
+        border-radius: 6px;
+        color: $theme-red-color;
         font-weight: 700;
-      dd
-        display: inline-block;
-        padding: 0 10px;
-        margin: 0 5px 10px 0;
-        height: 30px;
-        line-height: 30px;
-        color: $font-first-color;
-        cursor: pointer;
-        &.active
-          background-color: rgba(242,13,13,.06);
-          border-radius: 6px;
-          color: $theme-red-color;
-          font-weight: 700;
-        &:hover
-          color: $theme-red-color;
+
+      &:hover
+        color: $theme-red-color;
 </style>

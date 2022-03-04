@@ -73,10 +73,10 @@
 
 <script>
 import CartHeader from './cart-header.vue'
-import Empty from 'components/empty/empty.vue'
-import { getCartList, deleteCart } from 'api/cart.js'
-import { ERR_OK } from 'api/config.js'
-import { setCheckLessons } from 'utils/cache.js'
+import empty from "../../components/empty/empty";
+import {getCartList, deleteCart} from "../../api/cart";
+import { ERR_OK } from '../../api/config'
+import { setCheckLessons } from '../../utils/cache'
 export default {
   data () {
     return {
@@ -183,7 +183,7 @@ export default {
   },
   components: {
     CartHeader,
-    Empty
+    empty
   }
 }
 </script>
