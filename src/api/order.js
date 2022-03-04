@@ -2,31 +2,24 @@ import axios from 'utils/axios.js'
 
 // 分页获取用户充值记录接口
 export function getUserRecharges (params) {
-  return axios.get('/api/v1/recharge/list', {
+  return axios.get('/api/v2/recharge/list', {
     params
   })
 }
 
 // 新增用户充值记录接口
 export function createUserRecharges (data) {
-  return axios.post('/api/v1/recharge/create', data)
+  return axios.post('/api/v2/recharge/create', data)
 }
 
 // 查询用户余额接口
 export function getUserCharge () {
-  return axios.get('/api/v1/recharge/charge')
-}
-
-// 用户优惠券接口
-export function getCouponList (params) {
-  return axios.get('/api/v1/coupon/', {
-    params
-  })
+  return axios.get('/api/v2/recharge/info')
 }
 
 // 用户消费记录接口
 export function getUserBillList (params) {
-  return axios.get('/api/v1/bill/list', {
+  return axios.get('/api/v2/bills/list', {
     params
   })
 }
@@ -38,7 +31,7 @@ export function createOrder (data) {
 
 // 订单详情
 export function getOrderInfo (params) {
-  return axios.get('/api/v1/order/info', {
+  return axios.get('/api/v2/order/detail', {
     params
   })
 }
@@ -50,24 +43,17 @@ export function orderPay (data) {
 
 // 订单列表
 export function getOrderList (params) {
-  return axios.get('/api/v1/order/list', {
+  return axios.get('/api/v2/order/list', {
     params
   })
 }
 
 // 取消订单
 export function cancelOrder (params) {
-  return axios.get('/api/v1/order/cancel', {
-    params
-  })
+  return axios.post('/api/v2/order/cancel', params)
 }
 
 // 删除订单
 export function deleteOrder (params) {
-  return axios.delete(`/api/v1/order/${params.id}`)
-}
-
-// 用户咨询接口
-export function consultList () {
-  return axios.get('/api/v1/consult/')
+  return axios.post(`/api/v2/order/delete`, params)
 }

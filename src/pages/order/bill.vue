@@ -10,15 +10,15 @@
     <!-- 表格 -->
     <div class="bill-list">
       <el-table :data="billList">
-        <el-table-column label="订单编号" prop="orderno" />
-        <el-table-column label="课程" prop="name" show-overflow-tooltip />
-        <el-table-column label="时间" prop="time" width="180" />
-        <el-table-column label="消费金额" width="100">
-          <template slot-scope="{row}">
+        <el-table-column label="订单编号" prop="orderCode" align="center" />
+        <el-table-column label="课程" prop="title" show-overflow-tooltip align="center" />
+        <el-table-column label="时间" prop="createdAt" width="180" align="center" />
+        <el-table-column label="消费金额" width="100" align="center">
+          <template v-slot="{row}">
             ¥ {{ row.cost }}
           </template>
         </el-table-column>
-        <el-table-column label="支付方式" prop="way.text" width="100" />
+        <el-table-column label="支付方式" prop="payTypeTitle" width="100" />
       </el-table>
     </div>
 
@@ -51,14 +51,16 @@ export default {
     // 获取用户消费记录数据
     getBillListData () {
       const params = {
-        page: this.page
+        page: this.page,
+        size: 10
       }
       getUserBillList(params).then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.billList = data.list
-          this.total = data.total
-          this.count = data.count
+        let { error, data, msg } = res
+        if (error === ERR_OK) {
+          const { items, extra } = data
+          this.billList = items || []
+          this.total = data.totalCount
+          this.count = extra.cost
         } else {
           this.billList = []
           this.total = 0

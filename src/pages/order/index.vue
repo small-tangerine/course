@@ -7,7 +7,7 @@
           v-for="(item,index) in navList"
           :key="item.id"
           class="order-nav-item"
-          :class="{active: currentIndex == index}"
+          :class="{active: currentIndex === index}"
           @click="currentIndex = index"
         >
           {{ item.title }}

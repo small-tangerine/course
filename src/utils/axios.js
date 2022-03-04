@@ -11,7 +11,7 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
     config => {
-        config.headers['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi55So5oi3MTY0NjMyMDMwMzkxNCIsInN1YiI6IjEzNjMwNDk3OTE2IiwiaWF0IjoxNjQ2MzIwMzA0MDAwLCJ1dWlkIjo2LCJqdGkiOiJkYzRlODljNi1iYzczLTRkYmEtYTU0NS01Y2E5NDE3NThiODMifQ.i8lEv1E8775hTjgwuJ2o0Ok0TKtRIftr8D25MbUOoEg'
+        config.headers['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi55So5oi3MTY0NjI5Njk0ODEyMCIsInN1YiI6IjEzNjMwNDk3OTE2IiwiaWF0IjoxNjQ2Mjk2OTQ4MDAwLCJ1dWlkIjoxLCJqdGkiOiJlZmMxN2ZlYy0yMmQ5LTQ0YjItOWIxNi02MWVkZWQ4N2I1OTAifQ.LXPlHPerC7KG95YUrl4qWlWBJsy0pjMNcbWbPFncSgs'
         return config
     },
     error => {

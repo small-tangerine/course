@@ -20,15 +20,15 @@
           </p>
         </div>
       </div>
-      <div class="balancel-list">
+      <div class="balance-list">
         <el-table :data="recharge">
-          <el-table-column label="时间" prop="time" width="200" />
+          <el-table-column label="时间" prop="createdAt" width="200" />
           <el-table-column label="金额" width="120">
-            <template slot-scope="{row}">
-              ¥ {{ row.money }}
+            <template v-slot="{row}">
+              ¥ {{ row.amount }}
             </template>
           </el-table-column>
-          <el-table-column label="操作" prop="action.text" width="100" />
+          <el-table-column label="操作" prop="actionTypeTitle" width="100" />
           <el-table-column label="备注" prop="remark" />
         </el-table>
       </div>
@@ -46,7 +46,7 @@
               v-for="(item,index) in amountList"
               :key="index"
               class="recharge-item"
-              :class="{active: index == amountIndex}"
+              :class="{active: index === amountIndex}"
               @click="handleAmountItemClick(item, index)"
             >
               <template v-if="index < lastIndex">¥</template>
@@ -57,8 +57,11 @@
             </span>
           </div>
           <el-input
-            v-if="amountIndex == lastIndex"
-            v-model.number="amount"
+            v-if="amountIndex === lastIndex"
+            v-model="amount"
+            min="1"
+            max="5000"
+            type="number"
             placeholder="其它金额，请输入1-50000之间的整数"
           >
             <span slot="prefix" class="amount-icon">¥</span>
@@ -110,8 +113,8 @@ export default {
   },
   created () {
     this.rechargeWay = [
-      { type: '支付宝充值', code: 0, url: 'https://order.imooc.com/static/module/pay/center/img/alipay_balance.png' },
-      { type: '微信充值', code: 1, url: 'https://order.imooc.com/static/module/pay/center/img/wxpay_balance.png' }
+      { type: '支付宝充值', code: 2, url: 'https://order.imooc.com/static/module/pay/center/img/alipay_balance.png' },
+      { type: '微信充值', code: 3, url: 'https://order.imooc.com/static/module/pay/center/img/wxpay_balance.png' }
     ]
   },
   mounted () {
@@ -124,14 +127,14 @@ export default {
         return false
       }
       const params = {
-        money: this.money,
-        way: this.currentCode
+        amount: this.money,
+        payType: this.currentCode
       }
       this.isLoading = true
       createUserRecharges(params).then(res => {
         this.isLoading = false
-        const { code, msg } = res
-        if (code === ERR_OK) {
+        const { error, msg } = res
+        if (error === ERR_OK) {
           this.$message.success(msg)
           this.getUserRechargeList()
           this.dialogVisible = false
@@ -161,19 +164,20 @@ export default {
         page: this.page
       }
       getUserRecharges(params).then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.recharge = data.list,
-          this.total = data.total
-          this.sum = data.sum
+        let { error, data, msg } = res
+        if (error === ERR_OK) {
+          const { items, extra } = data
+          this.recharge = items || []
+          this.total = data.totalCount
+          this.sum = extra.cost || 0
         } else {
-          this.recharge = [],
+          this.recharge = []
           this.total = 0
           this.sum = 0
           this.$message.error(msg)
         }
       }).catch(() => {
-        this.recharge = [],
+        this.recharge = []
         this.total = 0
         this.sum = 0
         this.$message.error('接口异常')
@@ -242,7 +246,7 @@ export default {
             cursor: pointer;
           .recharge-text
             font-size: 12px;
-      .balancel-list
+      .balance-list
         padding: 10px 32px 11px;
         >>> .el-table
           &::before
