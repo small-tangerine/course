@@ -4,7 +4,7 @@
     <dl>
       <dt class="title">
         我的购物车
-        <span class="total">共加入{{ cartList.length || 0 }}门课程</span>
+        <span class="total">共加入{{ total }}门课程</span>
       </dt>
       <el-scrollbar>
         <div v-if="cartList.length > 0" class="cart-item-wrapper">
@@ -50,7 +50,8 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      cartList: []
+      cartList: [],
+      total:0,
     }
   },
   mounted () {
@@ -74,8 +75,8 @@ export default {
         id: item.id
       }
       deleteCart(params).then(res => {
-        const { code, msg } = res
-        if (code === ERR_OK) {
+        const { error, msg } = res
+        if (error === ERR_OK) {
           this.$message.success(msg)
           this.getCartListData()
         } else {
@@ -88,11 +89,14 @@ export default {
     // 获取购物车数据
     getCartListData () {
       getCartList().then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.cartList = data
+        let { error, data, msg } = res
+        if (error === ERR_OK) {
+          const { items, totalCount } = data
+          this.cartList = items || []
+          this.total = totalCount || 0
         } else {
           this.cartList = []
+          this.total = 0
           this.$message.error(msg)
         }
       }).catch(() => {

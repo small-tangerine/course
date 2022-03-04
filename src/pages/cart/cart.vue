@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <cart-header>
       <span class="cart-name">我的购物车</span>
-      <span class="number">共{{ cartList.length }}门，已选{{ checkNumber }}门</span>
+      <span class="number">共{{ total }}门，已选{{ checkNumber }}门</span>
       <router-link class="history-order" to="/order">我的订单历史</router-link>
     </cart-header>
 
@@ -58,7 +58,7 @@
             </div>
             <button
               class="account-btn"
-              :class="{'is-disabled': checkNumber == 0}"
+              :class="{'is-disabled': checkNumber === 0}"
               @click="handleAccountClick"
             >
               去结算
@@ -80,7 +80,8 @@ import { setCheckLessons } from 'utils/cache.js'
 export default {
   data () {
     return {
-      cartList: []
+      cartList: [],
+      total: 0
     }
   },
   mounted () {
@@ -107,8 +108,8 @@ export default {
         id: item.id
       }
       deleteCart(params).then(res => {
-        const { code, msg } = res
-        if (code === ERR_OK) {
+        const { error, msg } = res
+        if (error === ERR_OK) {
           this.$message.success(msg)
           this.getCartListData()
         } else {
@@ -134,12 +135,11 @@ export default {
     // 获取购物车列表接口数据
     getCartListData () {
       getCartList().then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          if(!data){
-            data = []
-          }
-          this.cartList = this.normalizeCartData(data)
+        let { error, data, msg } = res
+        if (error === ERR_OK) {
+          const { items, totalCount } = data
+          this.cartList = this.normalizeCartData(items || [])
+          this.total = totalCount || 0
         } else {
           this.cartList = []
           this.$message.error(msg)
@@ -152,13 +152,13 @@ export default {
     // 获取总计金额
     getTotal () {
       let list = this.cartList.slice()
-      let reuslt = 0
+      let result = 0
       list.forEach(item => {
         if (item.isCheck) {
-          reuslt  = reuslt + parseFloat(item.price)
+          result  = result + parseFloat(item.price)
         }
       })
-      return reuslt || 0
+      return result || 0
     },
     // 处理购物车数据
     normalizeCartData (array) {

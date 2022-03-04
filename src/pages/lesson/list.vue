@@ -44,7 +44,7 @@
             <span v-if="item.isDiscount" class="new">¥{{ item.discountPrice }}</span>
             <span class="old" :class="{'is-discount': item.isDiscount}">¥{{ item.price }}</span>
             <span class="price-right">
-              <span v-if="!item.isBuy" class="cart" @click.stop="handleAddCartClick(item)">加入购物车</span>
+              <span v-if="!item.isBuy" class="cart" @click.stop="handleAddCartClick(item.id)">加入购物车</span>
             </span>
           </p>
           <p v-if="item.isDiscount">
@@ -62,6 +62,7 @@ import {addCart} from 'api/cart.js'
 import {ERR_OK} from 'api/config.js'
 import {mapGetters} from "vuex";
 import store from "@/store";
+
 export default {
   props: {
     list: {
@@ -81,9 +82,9 @@ export default {
   },
   created () {
     this.filter = [
-      { title: '默认排序', code: '' },
-      { title: '最新', code: '-time' },
-      { title: '销量', code: '-persons' }
+      {title: '默认排序', code: ''},
+      {title: '最新', code: '-time'},
+      {title: '销量', code: '-persons'}
     ]
   },
   computed: {
@@ -97,13 +98,13 @@ export default {
     },
     // 加入购物车
     handleAddCartClick (item) {
-    if (!this.userInfo.id){
-      store.commit('login/SET_LOGIN_ACTION', 'login')
-      store.commit('login/SET_SHOW_LOGIN', true)
-      return
-    }
-      addCart(item).then(res => {
-        const { code, msg } = res
+      if (!this.userInfo.id) {
+        store.commit('login/SET_LOGIN_ACTION', 'login')
+        store.commit('login/SET_SHOW_LOGIN', true)
+        return
+      }
+      addCart({id:item}).then(res => {
+        const {code, msg} = res
         if (code === ERR_OK) {
           this.$confirm('添加购物车成功', '提示', {
             confirmButtonText: '去购物车结算',
@@ -137,136 +138,166 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-  @import '~assets/stylus/variables.styl';
-  @import '~assets/stylus/mixin.styl';
-  .lesson-list-wrapper
-    .list-filter
-      padding: 20px 12px;
-      border-top: 1px solid $border-second-color;
-      & > ul
-        display: inline-block;
-      .filter-item
-        display: inline-block;
-        margin-right: 12px;
-        padding: 4px 12px;
-        border-radius: 12px;
-        line-height: 16px;
-        font-size: 12px;
-        color: $font-second-color;
-        cursor: pointer;
-        &.active
-          background-color: $font-second-color;
-          color: #fff;
-    .lesson-list
-      .list-item
-        display: inline-block;
-        vertical-align: top;
-        margin-right: 24px;
-        margin-bottom: 36px;
-        width: 270px;
-        cursor: pointer;
-        &:hover
-          .img-box
-            box-shadow: 0 8px 4px 0 rgba(7,17,27,0.1);
-          .lesson-content
-            .title
-              color: $theme-red-color;
-        &:nth-child(5n) {
-          margin-right: 0;
-        }
+@import '~assets/stylus/variables.styl';
+@import '~assets/stylus/mixin.styl';
+.lesson-list-wrapper
+  .list-filter
+    padding: 20px 12px;
+    border-top: 1px solid $border-second-color;
+
+    & > ul
+      display: inline-block;
+
+    .filter-item
+      display: inline-block;
+      margin-right: 12px;
+      padding: 4px 12px;
+      border-radius: 12px;
+      line-height: 16px;
+      font-size: 12px;
+      color: $font-second-color;
+      cursor: pointer;
+
+      &.active
+        background-color: $font-second-color;
+        color: #fff;
+
+  .lesson-list
+    .list-item
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 24px;
+      margin-bottom: 36px;
+      width: 270px;
+      cursor: pointer;
+
+      &:hover
         .img-box
-          position: relative;
-          border-radius: 16px;
-          img-box(270px, 148px);
-          & > img
-            border-radius: 16px;
-          .rate
-            position: absolute;
-            right: -8px;
-            top: 8px;
-            padding: 0 8px;
-            border-radius: 12px;
-            border: 2px solid #fff;
-            line-height: 20px;
-            background: linear-gradient(-90deg,#65da98 0,#0cba4d 100%);
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
-          .lesson-mask
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 74px;
-            background: linear-gradient(-180deg,rgba(7,17,27,0) 0,rgba(7,17,27,.6) 97%);
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            .teacher-info
-              position: absolute;
-              left: 16px;
-              bottom: 16px;
-              & > img
-                display: inline-block;
-                vertical-align: text-bottom;
-                margin-right: 12px;
-                width: 36px;
-                height: 36px;
-                background-color: #eee;
-                border-radius: 50%;
-              .name
-                display: inline-block;
-                margin-top: -2px;
-                font-size: 14px;
-                font-weight: 700;
-                color: #fff;
+          box-shadow: 0 8px 4px 0 rgba(7, 17, 27, 0.1);
+
         .lesson-content
-          padding: 0 8px;
           .title
-            margin-top: 16px;
-            height: 48px;
-            font-size: 16px;
-            font-weight: 700;
+            color: $theme-red-color;
+
+      &:nth-child(5n) {
+        margin-right: 0;
+      }
+
+      .img-box
+        position: relative;
+        border-radius: 16px;
+        img-box(270px, 148px);
+
+        & > img
+          border-radius: 16px;
+
+        .rate
+          position: absolute;
+          right: -8px;
+          top: 8px;
+          padding: 0 8px;
+          border-radius: 12px;
+          border: 2px solid #fff;
+          line-height: 20px;
+          background: linear-gradient(-90deg, #65da98 0, #0cba4d 100%);
+          font-size: 12px;
+          font-weight: 700;
+          color: #fff;
+
+        .lesson-mask
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 74px;
+          background: linear-gradient(-180deg, rgba(7, 17, 27, 0) 0, rgba(7, 17, 27, .6) 97%);
+          border-bottom-left-radius: 16px;
+          border-bottom-right-radius: 16px;
+
+          .teacher-info
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+
+            & > img
+              display: inline-block;
+              vertical-align: text-bottom;
+              margin-right: 12px;
+              width: 36px;
+              height: 36px;
+              background-color: #eee;
+              border-radius: 50%;
+
+            .name
+              display: inline-block;
+              margin-top: -2px;
+              font-size: 14px;
+              font-weight: 700;
+              color: #fff;
+
+      .lesson-content
+        padding: 0 8px;
+
+        .title
+          margin-top: 16px;
+          height: 48px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 24px;
+          color: $font-first-color;
+          word-break: break-all;
+          multline-ellipsis(2);
+
+        & > p
+          line-height: 20px;
+          color: $font-four-color;
+          font-size: 12px;
+
+          span
             line-height: 24px;
-            color: $font-first-color;
-            word-break: break-all;
+            cursor: pointer;
+
+          &.desc
+            margin-top: 4px;
+            height: 42px;
             multline-ellipsis(2);
-          & > p
-            line-height: 20px;
-            color: $font-four-color;
-            font-size: 12px;
-            span
-              line-height: 24px;
-              cursor: pointer;
-            &.desc
-              margin-top: 4px;
-              height: 42px;
-              multline-ellipsis(2);
+
+            &:hover
+              color: $font-second-color;
+
+          &.price
+            margin-bottom: 4px;
+
+          .number
+            margin-left: 10px;
+
+          .comment
+            float: right;
+
+          .old
+            color: $font-second-color;
+
+            &.is-discount
+              margin-left: 8px;
+              text-decoration: line-through;
+
+          .new
+            color: $font-second-color;
+
+          .price-right
+            float: right;
+
+            .cart
+              padding-left: 10px;
+
               &:hover
                 color: $font-second-color;
-            &.price
-              margin-bottom: 4px;
-            .number
-              margin-left: 10px;
-            .comment
-              float: right;
-            .old
-              color: $font-second-color;
-              &.is-discount
-                margin-left: 8px;
-                text-decoration: line-through;
-            .new
-              color: $font-second-color;
-            .price-right
-              float: right;
-              .cart
-                padding-left: 10px;
-                &:hover
-                  color: $font-second-color;
-            .discount
-              padding: 4px;
-              border-radius: 4px;
-              background-color: $theme-red-color;
-              opacity: 0.6;
-              line-height: 20px;
-              color: #fff;
+
+          .discount
+            padding: 4px;
+            border-radius: 4px;
+            background-color: $theme-red-color;
+            opacity: 0.6;
+            line-height: 20px;
+            color: #fff;
 </style>
