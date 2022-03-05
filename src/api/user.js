@@ -1,26 +1,20 @@
-import axios from 'utils/axios.js'
+import axios from '../utils/axios'
 
 // 用户登录
 export function userLogin (data) {
-  return axios.post('/api/v1/user/login', data)
+  return axios.post('/api/v2/account/login', data)
 }
 
 // 用户注册接口
 export function userRegister (data) {
-  return axios.post('/api/v1/user/register', data)
+  return axios.post('/api/v2/account/register', data)
 }
 
-// 获取用户详细信息接口
-export function getUserInfo () {
-  return axios.get('/api/v1/user/info')
+//用户重置密码
+export function userForget (data) {
+  return axios.post('/api/v2/account/reset-password', data)
 }
 
-// 分页获取用户登录日志
-export function getUserLogs (params) {
-  return axios.get('/api/v1/log/', {
-    params
-  })
-}
 
 // 编辑账号绑定信息
 export function updateUserBinds (data) {

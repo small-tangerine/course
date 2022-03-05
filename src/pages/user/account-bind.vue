@@ -141,17 +141,16 @@ export default {
           this.$message.success(msg)
           this.dialogVisible = false
           const {isUpdateUsername} = data
-          if (isUpdateUsername === 1)
-          {
+          if (isUpdateUsername === 1){
             // 修改成功后，退出登录，调整到首页弹窗登录框
             this.timer = setTimeout(() => {
               this.logout()
               this.$router.replace('/home')
               this.showLogin(true)
             }, 500)
+          }else {
+            this.setUserInfo(data)
           }
-        } else {
-          this.$message.error(msg)
         }
       }).catch(() => {
         this.$message.error('接口异常')
@@ -163,7 +162,8 @@ export default {
       'logout': 'login/logout'
     }),
     ...mapMutations({
-      'showLogin': 'login/SET_SHOW_LOGIN'
+      'showLogin': 'login/SET_SHOW_LOGIN',
+      'setUserInfo': 'SET_USER_INFO',
     })
   },
   computed: {

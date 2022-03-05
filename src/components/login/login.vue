@@ -27,14 +27,15 @@
 </template>
 <script>
 import { mapMutations } from 'vuex'
-import { userLogin, userRegister } from 'api/user.js'
-import { ERR_OK } from 'api/config.js'
+import { userLogin, userRegister, userForget } from '../../api/user'
+import { ERR_OK } from '../../api/config'
+import {setToken} from "../../utils/auth";
 export default {
   props: {
     index: Number
   },
   data () {
-    const checheckPassword = (rule, value, callback) => {
+    const checkToPassword = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请再次输入密码'))
       } else if (value !== this.loginForm.password) {
@@ -52,7 +53,7 @@ export default {
       ],
       checkPassword: [
         { required: true, message: '请再次输入密码', trigger: 'blur' },
-        { validator: checheckPassword, trigger: 'blur' }
+        { validator: checkToPassword, trigger: 'blur' }
       ],
       verifyCode: [
         { required: true, message: '请输入验证码', trigger: 'blur' }
@@ -121,28 +122,35 @@ export default {
     handleBtnClick () {
       const params = {
         username: this.loginForm.username,
-        password: this.loginForm.password
+        password: this.loginForm.password,
+      }
+      if (this.index !== 0){
+        params.checkPassword = this.loginForm.checkPassword
+      }
+      if (this.index === 2){
+        params.verifyCode = this.loginForm.verifyCode
       }
       // 判断是登陆还是注册
-      const func = this.index === 0 ? userLogin : userRegister
-      const tips = this.index === 0 ? '登录' : '注册'
+      const func = this.index === 0 ? userLogin : (this.index === 1 ? userRegister : userForget)
+      const tips = this.index === 0 ? '登录' : (this.index === 1 ? '注册' : '重置密码')
       this.isLoading = true
       func(params).then(res => {
         this.isLoading = false
-        let { code, data, msg } = res
-        if (code !== ERR_OK) {
-          this.loginForm.password = ''
-          this.loginForm.checkPassword = ''
-          this.$message.error(msg)
+        let { error, data} = res
+        if (error !== ERR_OK) {
           return false
         }
         this.$message.success(`${tips}成功`)
         this.loginForm = {}
+        //token
+        setToken(data.token, 1800)
         // 缓存用户数据
+        data.token = undefined
         this.setUserInfo(data)
         // 关闭弹窗
         this.setShowLogin(false)
-      }).catch(() => {
+      }).catch((error) => {
+        console.log(error)
         this.isLoading = false
         this.$message.error('服务器异常')
       })

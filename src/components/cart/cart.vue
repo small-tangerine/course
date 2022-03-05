@@ -55,7 +55,7 @@ export default {
     }
   },
   mounted () {
-    if (this.userInfo.id) {
+    if (this.userInfo && this.userInfo.id) {
       this.getCartListData()
     }
   },

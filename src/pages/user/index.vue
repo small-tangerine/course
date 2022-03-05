@@ -87,12 +87,11 @@
 <script>
 import AccountBind from "./account-bind.vue"
 import Information from "./information.vue"
-import { getUserInfo, updateUserAvatar } from 'api/user.js'
-import { ERR_OK } from 'api/config.js'
+import { updateUserAvatar } from '../../api/user'
 import { mapGetters, mapMutations } from 'vuex'
-import store from "@/store";
+import store from "../../store";
 import {VueCropper} from "vue-cropper";
-import {subUrlFileName} from "utils/utils";
+import {subUrlFileName} from "../../utils/utils";
 
 export default {
   data () {
@@ -196,19 +195,6 @@ export default {
     // 动态组件点击事件
     handleComponentClick (data) {
       this.setUserInfo(data)
-    },
-    // 获取用户详细信息
-    getUserInfoData () {
-      getUserInfo().then(res => {
-        const { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.setUserInfo(data)
-        } else {
-          this.$message.error(msg)
-        }
-      }).catch(() => {
-        this.$message.error('接口异常')
-      })
     },
     // vuex
     ...mapMutations({

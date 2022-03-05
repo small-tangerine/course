@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '../store/index.js'
 import components from '../register.js'
-
+import {getToken, setToken, setSeconds, removeToken} from "./auth";
 const Message = components.Message
 const service = axios.create({
     timeout: 10000,
@@ -11,7 +11,10 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
     config => {
-        config.headers['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi55So5oi3MTY0NjI5Njk0ODEyMCIsInN1YiI6IjEzNjMwNDk3OTE2IiwiaWF0IjoxNjQ2Mjk2OTQ4MDAwLCJ1dWlkIjoxLCJqdGkiOiJlZmMxN2ZlYy0yMmQ5LTQ0YjItOWIxNi02MWVkZWQ4N2I1OTAifQ.LXPlHPerC7KG95YUrl4qWlWBJsy0pjMNcbWbPFncSgs'
+        const token = getToken()
+        if (token) {
+            config.headers['Authorization'] = token
+        }
         return config
     },
     error => {
@@ -23,11 +26,18 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         let {status, data} = response
+        const token = response.headers.authorization
+        if (token) {
+            // 判断与原有token是否相等
+            // 不等就换成返回来的token
+            setToken(token, 1800)
+            setSeconds(1800)
+        }
         if (status !== 200 && status !== 201 && status !== 204) {
             Message.error('网络异常，请刷新或者重试!')
             return Promise.reject('网络异常!')
         }
-        if (data.code !== 401){
+        if (data.code !== 401 && !data.error){
             return Promise.resolve(data)
         }
         if (response.status === 200 && !data.error && data.error !== 0) {
@@ -37,14 +47,18 @@ service.interceptors.response.use(
             if (data.error === 4001) {
                 store.commit('login/SET_LOGIN_ACTION', 'login')
                 store.commit('login/SET_SHOW_LOGIN', true)
-                store.dispatch('login/logout')
+                removeToken()
+                store.commit('login/SET_USER_INFO', undefined)
                 return Promise.resolve({
                     error: -1,
                     msg: data.msg
                 })
             } else {
                 Message.error(data.msg)
-                return Promise.reject(new Error(data.msg || 'Error'))
+                return Promise.resolve({
+                    error: -1,
+                    msg: data.msg
+                })
             }
         } else {
             return Promise.resolve(data)

@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/index.js'
-import { getUserInfo } from 'utils/cache.js'
+import { getUserInfo } from '../utils/cache'
 Vue.use(Router)
 
-const Home = () => import('pages/home/index.vue') // 首页路由
-const CourseIndex = () => import('pages/course/index.vue') // 免费课程路由
-const CourseDetail = () => import('pages/course-detail/index.vue') // 免费课程详情路由
-const LessonIndex = () => import('pages/lesson/index.vue') // 实战课程路由
-const LessonDetail = () => import('pages/lesson-detail/index.vue') // 实战课程详情路由
-const UserCenter = () => import('pages/user/index.vue') // 个人中心路由
-const UserCourse = () => import('pages/user-course/index.vue') // 我的课程路由
-const OrderIndex = () => import('pages/order/index.vue') // 订单中心路由
-const CartIndex = () => import('pages/cart/cart.vue') // 购物车路由
-const CartConfirm = () => import('pages/cart/confirm.vue') // 购物车确认路由
-const CartPay = () => import('pages/cart/pay.vue') // 购物车支付路由
+const Home = () => import('../pages/home/index') // 首页路由
+const CourseIndex = () => import('../pages/course/index') // 免费课程路由
+const CourseDetail = () => import('../pages/course-detail/index') // 免费课程详情路由
+const LessonIndex = () => import('../pages/lesson/index') // 实战课程路由
+const LessonDetail = () => import('../pages/lesson-detail/index') // 实战课程详情路由
+const UserCenter = () => import('../pages/user/index') // 个人中心路由
+const UserCourse = () => import('../pages/user-course/index') // 我的课程路由
+const OrderIndex = () => import('../pages/order/index') // 订单中心路由
+const CartIndex = () => import('../pages/cart/cart') // 购物车路由
+const CartConfirm = () => import('../pages/cart/confirm') // 购物车确认路由
+const CartPay = () => import('../pages/cart/pay') // 购物车支付路由
 
 const routes = [
   {
