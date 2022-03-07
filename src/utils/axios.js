@@ -48,7 +48,7 @@ service.interceptors.response.use(
                 store.commit('login/SET_LOGIN_ACTION', 'login')
                 store.commit('login/SET_SHOW_LOGIN', true)
                 removeToken()
-                store.commit('login/SET_USER_INFO', undefined)
+                store.commit('login/SET_USER_INFO', {})
                 return Promise.resolve({
                     error: -1,
                     msg: data.msg

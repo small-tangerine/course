@@ -19,6 +19,7 @@
     </el-form>
     <button
       class="login-btn"
+      :disabled="isLoading"
       @click="handleValidateForm"
     >
       {{ btnText }}

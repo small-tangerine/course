@@ -45,6 +45,7 @@
               :auto-crop-width="options.autoCropWidth"
               :auto-crop-height="options.autoCropHeight"
               :fixed-box="options.fixedBox"
+              enlarge="1"
               @realTime="realTime"
             />
           </el-col>
@@ -156,7 +157,6 @@ export default {
       if (file.type.indexOf('image/') === -1) {
         this.$message.error('请上传正确的图片')
       } else {
-        console.log(file)
         this.fileName = file.name
         this.previews = {}
         this.options.img = ''
@@ -173,12 +173,15 @@ export default {
         const formData = new FormData()
         formData.append('image', data, this.fileName)
         updateUserAvatar(formData).then(res => {
+          console.log(res)
           if (res.error === 0) {
             this.$message.success(res.msg)
             this.open = false
             // 缓存用户数据
             this.setUserInfo(res.data)
           }
+        }).catch(() => {
+          this.open = false
         })
       })
     },
