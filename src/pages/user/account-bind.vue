@@ -63,8 +63,8 @@
   </div>
 </template>
 <script>
-import {updateUserBinds} from "../../api/user";
-import {ERR_OK} from "../../api/config";
+import {updateUserBinds} from "api/user";
+import {ERR_OK} from "api/config";
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 export default {
   props: {

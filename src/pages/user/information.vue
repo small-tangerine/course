@@ -54,8 +54,8 @@
   </div>
 </template>
 <script>
-import {updateUserInfo} from "../../api/user";
-import {ERR_OK} from "../../api/config";
+import {updateUserInfo} from "api/user";
+import {ERR_OK} from "api/config";
 import {mapMutations} from "vuex";
 export default {
   props: {
