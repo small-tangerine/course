@@ -111,8 +111,6 @@ export default {
           this.dialogVisible = false
           this.$message.success(msg)
           this.$emit('componentClick', data)
-        } else {
-          this.$message.error(msg)
         }
       }).catch(() => {
         this.isLoading = false

@@ -12,7 +12,7 @@
     <!-- back to top -->
     <mooc-backtop :show-height="500"></mooc-backtop>
     <!-- login -->
-    <login v-if="showLogin" @maskClick="handleMaskClick" />
+    <login style="z-index: 5000!important;" v-if="showLogin" @maskClick="handleMaskClick" />
   </div>
 </template>
 <script>

@@ -19,9 +19,6 @@ export default {
   data () {
     return {
       swiperList: [],
-      allstar: [],
-      teacherList: [],
-      articleList: {},
       currentSwiper: '',
       lessonData: {
         recommend: [],
@@ -33,36 +30,9 @@ export default {
     }
   },
   created () {
-    this.getBanner()
     this.getCourseList()
-    this.getArticleList()
-    this.getTeacherList()
-    this.getAllStarList()
   },
   methods: {
-    // 滚动轮播滚动完毕事件
-    handelCarouselChange (index) {
-      this.currentSwiper = this.swiperList[index].img
-    },
-    // 首页轮播信息
-    getBanner () {
-      getSliderList().then((res) => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.swiperList = data
-          if (this.swiperList.length > 0) {
-            this.currentSwiper = this.swiperList[0].img
-          }
-        } else {
-          this.$message.error(msg)
-          this.swiperList = []
-          this.currentSwiper = ''
-        }
-      }).catch(() => {
-        this.swiperList = []
-        this.currentSwiper = ''
-      })
-    },
     // 获取课程信息
     getCourseList () {
       getHomeCourse().then(res => {
@@ -76,45 +46,6 @@ export default {
       }).catch(() => {
         this.lessonData = {}
         this.$message.error('接口异常')
-      })
-    },
-    // 获取猿问和手记
-    getArticleList () {
-      getArticle().then((res) => {
-        let { code, data } = res
-        if (code === ERR_OK) {
-          this.articleList = data
-        }
-      }).catch(() => {
-        this.articleList = []
-      })
-    },
-    // 获取精英讲师信息
-    getTeacherList () {
-      getTeacher().then(res => {
-        let { code, data, msg} = res
-        if (code === ERR_OK) {
-          this.teacherList = data
-        } else {
-          this.teacherList = []
-          this.$message.error(msg)
-        }
-      }).catch(() => {
-        this.teacherList = []
-      })
-    },
-    // 获取全明星学员信息
-    getAllStarList () {
-      getAllStar().then(res => {
-        let { code, data, msg} = res
-        if (code === ERR_OK) {
-          this.allstar = data
-        } else {
-          this.$message.error(msg)
-          this.allstar = []
-        }
-      }).catch(() => {
-        this.allstar = []
       })
     }
   },

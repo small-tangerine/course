@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '../store/index.js'
 import components from '../register.js'
 import {getToken, setToken, setSeconds, removeToken} from "./auth";
+import {removeUserInfo} from "utils/cache";
 const Message = components.Message
 const service = axios.create({
     timeout: 10000,
@@ -48,7 +49,7 @@ service.interceptors.response.use(
                 store.commit('login/SET_LOGIN_ACTION', 'login')
                 store.commit('login/SET_SHOW_LOGIN', true)
                 removeToken()
-                store.commit('login/SET_USER_INFO', {})
+                removeUserInfo()
                 return Promise.resolve({
                     error: -1,
                     msg: data.msg
