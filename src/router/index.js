@@ -98,6 +98,7 @@ const routes = [
 ]
 const router = new Router({
   routes: routes,
+  mode: 'history',
   scrollBehavior () {
     return {
       x: 0,
