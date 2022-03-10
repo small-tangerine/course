@@ -7,7 +7,7 @@
       @click="handleCourseClick(item)"
     >
       <div class="img-box">
-        <img :src="item.img" alt="">
+        <img :src="item.banner" alt="">
         <div v-if="item.labels && item.labels.length > 0" class="tags">
           <span v-for="(label, index) in item.labels" :key="index" class="tag-item">{{ label }}</span>
         </div>
@@ -19,15 +19,15 @@
         {{ item.title }}
       </p>
       <p class="info">
-        <span>{{ item.type.text }}</span>
-        <span>{{ item.hard.text }}</span>
-        <span><i class="iconfont icon-user">&#xe607;</i>{{ item.persons }}</span>
         <span>
           <mooc-star class="star-box" :value="5" :disabled="true" />
         </span>
+        <span><i class="iconfont icon-user">&#xe607;</i>{{ item.learnPersons }}</span>
       </p>
+
       <p class="price">
-        <span>¥ {{ item.price }}</span>
+        <span v-if="item.type === 1">免费</span>
+        <span v-if="item.type === 2">¥ {{ item.price }}</span>
         <template v-if="item.isDiscount">
           <span class="old-price">¥ {{ item.discountPrice }}</span>
           <span class="discount-title">限时优惠</span>
@@ -50,7 +50,7 @@ export default {
     // 课程点击事件
     handleCourseClick () {
       this.$router.push(`/lesson`)
-    } 
+    }
   }
 }
 </script>
@@ -106,7 +106,7 @@ export default {
         padding: 0 8px;
         box-sizing: border-box;
       .course-name
-        height: 46px;
+        height: auto;
         word-break: break-all;
         font-size: 16px;
         font-weight: 700;
@@ -114,6 +114,8 @@ export default {
         color: $font-first-color;
         multline-ellipsis(2);
       .info
+        display flex;
+        justify-content space-between;
         margin-top: 5px;
         font-size: 12px;
         color: $font-four-color;

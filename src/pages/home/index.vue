@@ -12,7 +12,7 @@
 </template>
 <script>
 import CourseList from './course-list.vue'
-import { getSliderList, getHomeCourse, getArticle, getTeacher, getAllStar } from 'api/home.js'
+import { getHomeCourse} from 'api/home.js'
 import { ERR_OK } from 'api/config.js'
 export default {
   name: 'Home',
@@ -36,8 +36,8 @@ export default {
     // 获取课程信息
     getCourseList () {
       getHomeCourse().then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
+        let { error, data, msg } = res
+        if (error === ERR_OK) {
           this.lessonData = data
         } else {
           this.lessonData = {}

@@ -63,7 +63,7 @@ export default {
         page: this.page,
         size: this.size,
         keyword:keyword,
-        type: 2,
+        type: 1,
         category: this.params.category,
         label: this.params.label,
         sort: this.sort
