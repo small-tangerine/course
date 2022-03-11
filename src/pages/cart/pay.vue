@@ -140,12 +140,12 @@ export default {
       this.isDisabled = true
       const params = {
         code: this.code,
-        way: this.way
+        payType: this.way
       }
       orderPay(params).then(res => {
         this.isDisabled = false
-        const { code, msg } = res
-        if (code === ERR_OK) {
+        const { error, msg } = res
+        if (error === ERR_OK) {
           this.$confirm('支付成功，是否查看订单详情？', '提示', {
             confirmButtonText: '确定',
             type: 'success'

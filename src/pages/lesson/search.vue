@@ -25,7 +25,6 @@ export default {
   methods: {
     // 获取搜索热词
     getSearchList () {
-      alert(this.keyword)
       this.$emit("searchList", this.keyword)
     }
   }

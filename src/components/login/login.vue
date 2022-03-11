@@ -150,6 +150,7 @@ export default {
         this.setUserInfo(data)
         // 关闭弹窗
         this.setShowLogin(false)
+        location.reload()
       }).catch((error) => {
         console.log(error)
         this.isLoading = false

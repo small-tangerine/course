@@ -38,7 +38,7 @@ export function getOrderInfo (params) {
 
 // 订单支付
 export function orderPay (data) {
-  return axios.post('/api/v1/order/pay', data)
+  return axios.post('/api/v2/order/pay', data)
 }
 
 // 订单列表

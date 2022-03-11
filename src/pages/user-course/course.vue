@@ -12,7 +12,7 @@
       <template v-if="lessonList.length">
         <dd v-for="(item,index) in lessonList" :key="index" class="course-item">
           <div class="img-box">
-            <img :src="item.img" alt="">
+            <img :src="item.banner" alt="">
           </div>
           <div class="course-content">
             <p class="title">
@@ -59,9 +59,9 @@ export default {
   created () {
     // 初始化选项卡数据
     this.tabList = [
-      { title: '全部课程', type: '' },
-      { title: '免费课程', type: 0 },
-      { title: '实战课程', type: 1 }
+      { title: '全部课程', type: undefined },
+      { title: '免费课程', type: 1 },
+      { title: '实战课程', type: 2 }
     ]
   },
   mounted () {
@@ -85,12 +85,14 @@ export default {
         type: this.currentType
       }
       getUserCourse(params).then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.lessonList = data.list
+        let { error, data } = res
+        if (error === ERR_OK) {
+          const {items, totalCount} = data || []
+          this.lessonList = items || []
+          this.total = totalCount || 0
         } else {
           this.lessonList = []
-          this.$message.error(msg)
+          this.total = 0
         }
       }).catch(() => {
         this.lessonList = []

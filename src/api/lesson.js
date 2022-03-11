@@ -7,7 +7,7 @@ export function getLessonNav () {
 
 // 课程列表
 export function getLessonList (params) {
-  return axios.get('/api/v1/lesson/list', {
+  return axios.get('/api/v2/course/list', {
     params
   })
 }

@@ -16,7 +16,7 @@
     <course-list :list="courseList" :sort.sync="sort" />
 
     <!-- 分页 -->
-    <pagination :total="total" :page.sync="page" :size="size" @change="handlePaginationChange" />
+    <pagination v-if="total>0" :total="total" :page.sync="page" :size="size" @change="handlePaginationChange" />
   </div>
 </template>
 <script>
@@ -24,12 +24,12 @@ import CourseSearch from './search.vue'
 import CourseNav from './nav.vue'
 import CourseList from './list.vue'
 import Pagination from '../../components/pagination/pagination'
-import { getLessonNav, getLessonList } from '../../api/lesson'
-import { ERR_OK } from '../../api/config'
+import { getLessonNav, getLessonList } from 'api/lesson'
+import { ERR_OK } from 'api/config'
 export default {
   data () {
     return {
-      sort: undefined,
+      sort: 0,
       params: {},
       navList: [],
       courseList: [],
@@ -70,15 +70,16 @@ export default {
         size: this.size,
         keyword:keyword,
         type: 1,
-        category: this.params.direction,
-        label: this.params.category,
+        category: this.params.direction || 0,
+        label: this.params.category || 0,
         sort: this.sort
       }
       getLessonList(params).then(res => {
-        let { code, data, msg } = res
-        if(code === ERR_OK) {
-          this.courseList = data.list
-          this.total = data.total
+        let { error, data, msg } = res
+        if(error === ERR_OK) {
+          const {items, totalCount} = data || []
+          this.courseList = items || []
+          this.total = totalCount || 0
         } else {
           this.courseList = []
           this.total = 0

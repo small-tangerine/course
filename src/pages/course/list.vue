@@ -14,7 +14,7 @@
     <ul v-if="list.length" class="course-list">
       <li v-for="(item,index) in list" :key="index" class="list-item" @click="handleCourseClick(item)">
         <div class="img-box">
-          <img :src="item.img" alt="">
+          <img :src="item.banner" alt="">
           <div class="tags">
             <span v-for="(label, index) in item.labels" :key="index" class="tag-item">{{ label }}</span>
           </div>
@@ -27,8 +27,7 @@
             {{ item.title }}
           </h2>
           <p>
-            <span class="rank">{{ item.hard.text }}</span>
-            <span class="number"><i class="iconfont">&#xe607;</i>{{ item.persons }}</span>
+            <span class="number"><i class="iconfont">&#xe607;</i>{{ item.learnPersons || 0 }}</span>
           </p>
           <p class="desc">
             {{ item.introduction }}
@@ -62,9 +61,9 @@ export default {
   },
   created () {
     this.filterList = [
-      { title: '默认排序', code: undefined },
-      { title: '最新', code: 'time' },
-      { title: '最热', code: 'persons' }
+      { title: '默认排序', code: 0 },
+      { title: '最新', code: 0 },
+      { title: '最热', code: 1 }
     ]
   },
   methods: {

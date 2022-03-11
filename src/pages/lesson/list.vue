@@ -19,7 +19,7 @@
     <ul v-if="list.length" class="lesson-list">
       <li v-for="(item, index) in list" :key="index" class="list-item" @click="handleLessonClick(item)">
         <div class="img-box">
-          <img :src="item.img" alt="">
+          <img :src="item.banner" alt="">
           <span v-if="item.rate" class="rate">{{ item.rate }}%</span>
           <div class="lesson-mask">
             <div v-if="item.teacher" class="teacher-info">
@@ -33,9 +33,7 @@
             {{ item.title }}
           </h2>
           <p>
-            <span>{{ item.hard.text }}</span>
-            <span class="number"><i class="iconfont">&#xe607;</i>{{ item.persons || 0 }}</span>
-            <span class="comment">{{ item.comments || 0 }}人评价</span>
+            <span class="number"><i class="iconfont">&#xe607;</i>{{ item.learnPersons || 0 }}</span>
           </p>
           <p class="desc">
             {{ item.introduction }}
@@ -44,7 +42,7 @@
             <span v-if="item.isDiscount" class="new">¥{{ item.discountPrice }}</span>
             <span class="old" :class="{'is-discount': item.isDiscount}">¥{{ item.price }}</span>
             <span class="price-right">
-              <span v-if="!item.isBuy" class="cart" @click.stop="handleAddCartClick(item.id)">加入购物车</span>
+              <span v-if="item.isBuy === 0" class="cart" @click.stop="handleAddCartClick(item.id)">加入购物车</span>
             </span>
           </p>
           <p v-if="item.isDiscount">
@@ -58,8 +56,8 @@
 </template>
 <script>
 import Empty from '../../components/empty/empty'
-import {addCart} from '../../api/cart'
-import {ERR_OK} from '../../api/config'
+import {addCart} from 'api/cart'
+import {ERR_OK} from 'api/config'
 import {mapGetters} from "vuex";
 import store from "../../store";
 
@@ -82,9 +80,9 @@ export default {
   },
   created () {
     this.filter = [
-      {title: '默认排序', code: undefined},
-      {title: '最新', code: 'time'},
-      {title: '销量', code: 'persons'}
+      {title: '默认排序', code: 0},
+      {title: '最新', code: 0},
+      {title: '销量', code: 1}
     ]
   },
   computed: {
@@ -103,9 +101,9 @@ export default {
         store.commit('login/SET_SHOW_LOGIN', true)
         return
       }
-      addCart({id:item}).then(res => {
-        const {code, msg} = res
-        if (code === ERR_OK) {
+      addCart({courseId:item}).then(res => {
+        const {error, msg} = res
+        if (error === ERR_OK) {
           this.$confirm('添加购物车成功', '提示', {
             confirmButtonText: '去购物车结算',
             cancelButtonText: '再逛逛',
@@ -113,8 +111,6 @@ export default {
           }).then(() => {
             this.$router.push('/cart')
           })
-        } else {
-          this.$message.error(msg)
         }
       }).catch(() => {
         this.$message.error('接口异常')
