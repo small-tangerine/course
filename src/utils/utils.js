@@ -114,7 +114,7 @@ export function getBefore (list, item) {
             i = index
         }
     })
-    console.log(i)
+    // console.log(i)
   if (i >= 1){
     return list[i - 1]
   }
