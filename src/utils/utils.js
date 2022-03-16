@@ -107,9 +107,9 @@ export function subUrlFileName (url) {
 
 export function getBefore (list, item) {
     let i = -1
-    console.log(list)
+    // console.log(list)
     list.forEach((items, index) => {
-        console.log(index)
+        // console.log(index)
         if (items.id === item.id) {
             i = index
         }
@@ -123,14 +123,14 @@ export function getBefore (list, item) {
 
 export function getAfter (list, item) {
     let i = -1
-    console.log(list)
+    // console.log(list)
     list.forEach((items, index) => {
-        console.log(index)
+        // console.log(index)
         if (items.id === item.id) {
             i = index
         }
     })
-    console.log(i)
+    // console.log(i)
     if (i < list.length - 1){
         return list[i+1]
     }

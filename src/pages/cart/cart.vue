@@ -103,7 +103,7 @@ export default {
     },
     // 删除事件
     handleDeleteClick (item) {
-      console.log(item)
+      // console.log(item)
       const params = {
         id: item.id
       }

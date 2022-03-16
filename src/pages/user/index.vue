@@ -173,7 +173,7 @@ export default {
         const formData = new FormData()
         formData.append('image', data, this.fileName)
         updateUserAvatar(formData).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.error === 0) {
             this.$message.success(res.msg)
             this.open = false
@@ -187,7 +187,7 @@ export default {
     },
     // 实时预览
     realTime (data) {
-      console.log(data)
+      // console.log(data)
       this.previews = data
     },
     // 导航点击事件

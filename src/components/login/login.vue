@@ -98,7 +98,7 @@ export default {
     // <!--发送验证码-->
     sendCode () {
       this.$refs['loginForm'].validateField('username', valid => {
-        console.log(valid)
+        // console.log(valid)
         if (!valid) {
           let time = 60
           this.buttonText = '重新发送 ' + time

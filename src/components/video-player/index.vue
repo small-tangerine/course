@@ -200,7 +200,7 @@ export default {
     },
     getTitle () {
       const beforeVideo = getBefore(this.catalog.videos || [], this.learningDuration)
-      console.log(beforeVideo)
+      // console.log(beforeVideo)
       if (beforeVideo === undefined) {
         this.before = false
       } else {
