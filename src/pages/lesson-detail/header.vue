@@ -1,5 +1,7 @@
 <template>
-  <div class="lesson-detail-header" :style="getStyle">
+  <div class="lesson-detail-header" :style="{ 'background-image': `url(`+base.bgImg+`)`,'-webkit-box-shadow': '0 4px 8px 0 rgb(7 17 27 / 15%)',
+                                              'box-shadow': '0 4px 8px 0 rgb(7 17 27 / 15%)'}"
+  >
     <div class="m-center">
       <p class="bread-crumb">
         实战 \ {{ base.title }}
@@ -15,14 +17,6 @@ export default {
   props: {
     base: {
       type: Object
-    }
-  },
-  computed: {
-    getStyle () {
-      return {
-        'background': `url(${this.base.banner}) no-repeat center center`,
-        'background-size': 'cover'
-      }
     }
   }
 }

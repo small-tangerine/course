@@ -19,6 +19,9 @@
 <script>
 import LoginWay from './login.vue'
 import { mapMutations, mapGetters } from 'vuex'
+import store from "@/store";
+import {removeUserInfo} from "utils/cache";
+import {getToken} from "utils/auth";
 export default {
   data () {
     return {
@@ -29,6 +32,12 @@ export default {
   },
   created () {
     this.currentTabIndex = this.loginAction === 'login' ? 0 : 1
+    if (getToken()){
+
+    }else {
+      store.commit('login/SET_USER_INFO', undefined)
+      removeUserInfo()
+    }
   },
   methods: {
     // 遮罩点击

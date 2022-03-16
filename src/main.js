@@ -18,10 +18,10 @@ import {
   Pagination,
   Dialog,
   Button,
-    Row,
-    Col,
-    Upload,
-  Scrollbar
+  Row,
+  Col,
+  Upload,
+  Scrollbar, Timeline, TimelineItem
 } from 'element-ui'
 Vue.use(Icon)
 Vue.use(Table)
@@ -39,6 +39,8 @@ Vue.use(Button)
 Vue.use(Upload)
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

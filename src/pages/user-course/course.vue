@@ -19,12 +19,10 @@
               {{ item.title }}
             </p>
             <p class="learn">
-              <span class="rate">已学{{ item.percent }}%</span>
-              <span class="duration">用时{{ item.hours }}</span>
-              <span v-if="item.lastChapter" class="chapter">学习至{{ item.lastChapter }}</span>
+              <span class="duration">已经学习了{{ item.current | filterSecond }}分钟</span>
             </p>
             <p class="other">
-              <span class="learn-btn">继续学习</span>
+              <span class="learn-btn" @click="learnBegin(item)">继续学习</span>
             </p>
           </div>
         </dd>
@@ -46,6 +44,7 @@ import Pagination from 'components/pagination/pagination.vue'
 import Empty from 'components/empty/empty.vue'
 import { getUserCourse } from 'api/user.js'
 import { ERR_OK } from 'api/config.js'
+import {normalSeconds} from "utils/utils";
 export default {
   data () {
     return {
@@ -68,6 +67,15 @@ export default {
     this.getUserCourseData()
   },
   methods: {
+    learnBegin(item){
+      if (item.type===2)
+      {
+        this.$router.push(`/lesson/${item.alias}`)
+      }
+      if (item.type===1){
+        this.$router.push(`/course/${item.alias}`)
+      }
+    },
     // 选项卡点击事件
     handleTabClick (tab, index) {
       this.currentTabIndex = index
@@ -98,6 +106,11 @@ export default {
         this.lessonList = []
         this.$message.error('接口异常')
       })
+    }
+  },
+  filters: {
+    filterSecond (val) {
+      return normalSeconds(val)
     }
   },
   computed: {

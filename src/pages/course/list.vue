@@ -43,6 +43,8 @@
 </template>
 <script>
 import Empty from '../../components/empty/empty'
+import {getToken} from "utils/auth";
+import {mapMutations} from "vuex";
 export default {
   props: {
     list: {
@@ -74,8 +76,18 @@ export default {
     },
     // 课程点击事件
     handleCourseClick (lesson) {
-      this.$router.push({ path: `/course/${lesson.id}` })
-    }
+      if (getToken())
+      {
+        this.$router.push({ path: `/course/${lesson.alias}` })
+      }else {
+        this.setShowLogin(true)
+        this.setLoginAction('login')
+      }
+    },
+    ...mapMutations('login', {
+      'setShowLogin': 'SET_SHOW_LOGIN',
+      'setLoginAction': 'SET_LOGIN_ACTION',
+    }),
   },
   components: {
     Empty

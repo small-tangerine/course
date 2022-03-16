@@ -14,16 +14,22 @@ export function getLessonList (params) {
 
 // 课程详情
 export function getLessonDetail (params) {
-  return axios.get('/api/v1/lesson/info', {
+  return axios.get('/api/v2/course/detail', {
     params
   })
 }
 
 // 课程目录
-export function getLessonComment (params) {
-  return axios.get('/api/v1/lesson/comment', {
-    params
-  })
+export function getLessonVideo (params) {
+  return axios.get('/api/v2/course/video',{
+    params}
+  )
+}
+
+export function getLessonSetVideo (params) {
+  return axios.post('/api/v2/course/video-set-current',
+      params
+  )
 }
 
 // 课程问答

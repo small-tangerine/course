@@ -1,5 +1,5 @@
 <template>
-  <div class="course-detail-header">
+  <div class="course-detail-header" :style="{ 'background-image': `url(`+base.bgImg+`)`}">
     <div class="header">
       <div class="header-content m-center">
         <p class="breadcrumb-box">
@@ -20,8 +20,8 @@
               </p>
             </div>
             <dl>
-              <dd>时长：{{ base.hours || 0 }}小时</dd>
-              <dd>学习人数：{{ base.persons }}</dd>
+              <dd>时长：{{ (base.length || 0)|filterSecond }}分钟</dd>
+              <dd>学习人数：{{ base.learnPersons }}</dd>
             </dl>
           </div>
         </div>
@@ -30,6 +30,8 @@
   </div>
 </template>
 <script>
+import {normalSeconds} from "utils/utils";
+
 export default {
   props: {
     base: {
@@ -37,6 +39,11 @@ export default {
       default () {
         return {}
       }
+    }
+  },
+  filters: {
+    filterSecond (val) {
+      return normalSeconds(val)
     }
   }
 }

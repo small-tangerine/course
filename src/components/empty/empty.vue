@@ -4,6 +4,7 @@
     <p class="empty-msg">
       {{ message }}
     </p>
+    <slot name="info" />
   </div>
 </template>
 <script>

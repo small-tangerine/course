@@ -41,7 +41,8 @@
     "babel-eslint": "^8.2.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vue-video-player": "^5.0.2"
   },
   "postcss": {
     "plugins": {

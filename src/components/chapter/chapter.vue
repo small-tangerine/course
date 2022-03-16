@@ -3,15 +3,15 @@
     <div v-if="catalog.introduction" class="chapter-introduce">
       {{ catalog.introduction }}
     </div>
-    <div v-for="(item,index) in catalog.chapter" :key="index" class="chapter-item">
+    <div v-if="catalog.videos &&(catalog.videos || []).length>0" class="chapter-item">
       <ul>
-        <li v-for="(term, index) in item.term" :key="index" class="term-item">
+        <li v-for="(term, index) in catalog.videos" :key="index" class="term-item" @click="goToVideo(term)">
           <p>
             <span class="iconfont play">&#xe615;</span>
-            <span>{{ term.title }}({{ term.seconds | filterSecond }})</span>
+            <span>{{ term.title }}({{ term.videoLength | filterSecond }})</span>
             <span class="right">
-              <i v-if="term.rate === 1" class="iconfont complete">&#xe60f;</i>
-              <span v-else-if="term.rate === 2" class="doning">
+              <i v-if="term.isFinish === 1" class="iconfont complete">&#xe60f;</i>
+              <span v-else-if="term.isFinish === 2" class="doning">
                 最近学习
                 <i class="iconfont">&#xe601;</i>
               </span>
@@ -21,7 +21,8 @@
         </li>
       </ul>
     </div>
-    <p v-if="catalog.isComplete" class="complete-info">
+    <empty v-else message="该课程暂无教学视频" />
+    <p v-if="catalog.isFinish" class="complete-info">
       <i class="iconfont">&#xe786;</i>
       本课程已完结
     </p>
@@ -29,13 +30,22 @@
 </template>
 <script>
 import { normalSeconds } from 'utils/utils.js'
+import empty from "components/empty/empty";
 export default {
+  components:{
+    empty
+  },
   props: {
     catalog: {
       type: Object,
       default () {
         return {}
       }
+    }
+  },
+  methods:{
+    goToVideo (item){
+       this.$emit('goToVideo', item)
     }
   },
   filters: {

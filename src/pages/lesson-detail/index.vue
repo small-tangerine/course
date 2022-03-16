@@ -15,27 +15,28 @@ import { ERR_OK } from 'api/config.js'
 export default {
   data () {
     return {
-      detail: {}
+      detail: {},
+      alias:undefined
     }
   },
   mounted () {
+    this.alias = this.$route.params.id
     this.getLessonDetailData()
   },
   methods: {
     // 获取课程详情
     getLessonDetailData () {
       const params = {
-        id: this.$route.params.id
+        alias: this.alias
       }
       getLessonDetail(params).then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
-          this.detail = data
+        let { error, data, msg } = res
+        if (error === ERR_OK) {
+          this.detail = data || {}
         } else {
           this.detail = {}
           this.$message.error(msg)
         }
-        console.log(this.detail)
       }).catch(() => {
         this.detail = {}
         this.$message.error('接口异常')

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/index.js'
-import { getUserInfo } from '../utils/cache'
+import { getUserInfo } from 'utils/cache'
 Vue.use(Router)
 
 const Home = () => import('../pages/home/index') // 首页路由

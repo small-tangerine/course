@@ -1,17 +1,23 @@
 <template>
   <div class="course-detail">
     <!-- 头部 -->
-    <course-header :base="courseDetail" />
-
+    <course-header v-if="courseDetail.id" :base="courseDetail" />
     <!-- 内容部分 -->
-    <course-content :data="courseDetail" />
+    <course-content v-if="courseDetail.id" :data="courseDetail" />
+    <empty v-else message="无效的课程信息">
+      <template slot="info">
+        <div style="margin-top: 15px;"> <a href="/home">返回首页</a></div>
+      </template>
+    </empty>
   </div>
 </template>
 <script>
 import CourseHeader from './header.vue'
 import CourseContent from './content.vue'
-import { getLessonDetail } from 'api/lesson.js'
-import { ERR_OK } from 'api/config.js'
+import {getLessonDetail} from 'api/lesson.js'
+import {ERR_OK} from 'api/config.js'
+import empty from "components/empty/empty";
+
 export default {
   name: 'CourseDetail',
   data () {
@@ -24,21 +30,21 @@ export default {
   mounted () {
     this.getCourseDetailData()
   },
+
   methods: {
     // 获取课程详情
     getCourseDetailData () {
       const params = {
-        id: this.$route.params.id
+        alias: this.$route.params.id
       }
       getLessonDetail(params).then(res => {
-        let { code, data, msg } = res
-        if (code === ERR_OK) {
+        let {error, data} = res
+        if (error === ERR_OK) {
           this.courseDetail = data
         } else {
           this.courseDetail = {}
-          this.$message.error(msg)
         }
-      }).catch (() => {
+      }).catch(() => {
         this.courseDetail = {}
         this.$message.error('接口异常')
       })
@@ -46,7 +52,8 @@ export default {
   },
   components: {
     CourseHeader,
-    CourseContent
+    CourseContent,
+    empty
   }
 }
 </script>

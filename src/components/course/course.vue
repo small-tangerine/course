@@ -37,6 +37,9 @@
   </ul>
 </template>
 <script>
+import {getToken} from "utils/auth";
+import {mapMutations} from "vuex";
+
 export default {
   props: {
     list: {
@@ -46,12 +49,33 @@ export default {
       }
     }
   },
+  data (){
+    return{
+
+    }
+  },
   methods: {
     // 课程点击事件
-    handleCourseClick () {
-      this.$router.push(`/lesson`)
-    }
-  }
+    handleCourseClick (item) {
+      if (getToken())
+      {
+        if (item.type===2)
+        {
+          this.$router.push(`/lesson/${item.alias}`)
+        }
+        if (item.type===1){
+          this.$router.push(`/course/${item.alias}`)
+        }
+      }else {
+        this.setShowLogin(true)
+        this.setLoginAction('login')
+      }
+    },
+    ...mapMutations('login', {
+      'setShowLogin': 'SET_SHOW_LOGIN',
+      'setLoginAction': 'SET_LOGIN_ACTION',
+    }),
+  },
 }
 </script>
 <style lang="stylus" scoped>

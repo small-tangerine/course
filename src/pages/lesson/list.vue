@@ -58,9 +58,9 @@
 import Empty from '../../components/empty/empty'
 import {addCart} from 'api/cart'
 import {ERR_OK} from 'api/config'
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 import store from "../../store";
-
+import {getToken} from "utils/auth";
 export default {
   props: {
     list: {
@@ -118,10 +118,17 @@ export default {
     },
     // 课程点击事件
     handleLessonClick (lesson) {
-      if (lesson.isBuy) {
-        this.$router.push(`/lesson/${lesson.id}`)
+      if (getToken()) {
+        this.$router.push(`/lesson/${lesson.alias}`)
+      } else {
+        this.setShowLogin(true)
+        this.setLoginAction('login')
       }
-    }
+    },
+    ...mapMutations('login', {
+      'setShowLogin': 'SET_SHOW_LOGIN',
+      'setLoginAction': 'SET_LOGIN_ACTION',
+    }),
   },
   components: {
     Empty
