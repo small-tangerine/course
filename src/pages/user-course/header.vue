@@ -18,7 +18,7 @@
       <div class="right">
         <dl>
           <dd>
-            <span>{{ userInfo.learnHour }}h</span>
+            <span>{{ learn |filterSecond}}分钟</span>
             <span>学习时长</span>
           </dd>
           <dt>
@@ -33,10 +33,29 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import {getUserLearn} from "api/user";
+import {ERR_OK} from "api/config";
+import {normalSeconds} from "utils/utils";
 export default {
   computed: {
     ...mapGetters(['userInfo'])
-  }
+  },data(){
+    return{
+      learn:0
+    }
+  },
+  created () {
+    getUserLearn().then(res=>{
+      if (res.error===ERR_OK){
+        const { data } =res || {}
+        this.learn= data.learn || 0
+      }
+    })
+  },  filters: {
+    filterSecond (val) {
+      return normalSeconds(val)
+    }
+  },
 }
 </script>
 <style lang="stylus" scoped>

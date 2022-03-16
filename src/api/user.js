@@ -37,3 +37,8 @@ export function getUserCourse (params) {
     params
   })
 }
+
+// 获取用户课程信息接口
+export function getUserLearn () {
+  return axios.get('/api/v2/user/learn')
+}

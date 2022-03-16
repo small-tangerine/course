@@ -88,11 +88,11 @@
 <script>
 import AccountBind from "./account-bind.vue"
 import Information from "./information.vue"
-import { updateUserAvatar } from '../../api/user'
+import { updateUserAvatar } from 'api/user'
 import { mapGetters, mapMutations } from 'vuex'
 import store from "../../store";
 import {VueCropper} from "vue-cropper";
-import {subUrlFileName} from "../../utils/utils";
+import {subUrlFileName} from "utils/utils";
 
 export default {
   data () {
