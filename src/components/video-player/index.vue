@@ -5,7 +5,7 @@
         <span class="tit tr-fix">{{ learningDuration.title }}</span>
       </h1>
       <div class="video-data">
-        <span :title="learningDuration.persons" class="view">{{ learningDuration.personsTitle }}&nbsp;·&nbsp;</span>
+        <span class="view">{{ learningDuration.personsTitle }}&nbsp;·&nbsp;</span>
         <span>{{ learningDuration.createdAt }}</span>
       </div>
     </div>

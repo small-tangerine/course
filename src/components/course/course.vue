@@ -95,6 +95,7 @@ export default {
           color: $theme-red-color;
       .img-box
         position: relative;
+        overflow hidden;
         margin: 0 auto 8px;
         img-box(216px, 120px)
         & > img
