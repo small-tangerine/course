@@ -45,9 +45,9 @@
 </template>
 <script>
 import CartHeader from './cart-header.vue'
-import {getCheckLessons, removeCheckLessons} from "../../utils/cache";
-import {createOrder} from "../../api/order";
-import {ERR_OK} from "../../api/config";
+import {getCheckLessons, removeCheckLessons} from "utils/cache";
+import {createOrder} from "api/order";
+import {ERR_OK} from "api/config";
 export default {
   data () {
     return {
@@ -96,7 +96,11 @@ export default {
       let list = this.cartList.slice()
       let reuslt = 0
       list.forEach(item => {
-        reuslt  = reuslt + parseFloat(item.price)
+        if (item.isDiscount ===1){
+          reuslt  = reuslt + parseFloat(item.discountPrice)
+        }else {
+          reuslt  = reuslt + parseFloat(item.price)
+        }
       })
       return reuslt || 0
     }

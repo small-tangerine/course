@@ -155,7 +155,11 @@ export default {
       let result = 0
       list.forEach(item => {
         if (item.isCheck) {
-          result  = result + parseFloat(item.price)
+          if (item.isDiscount ===1){
+            result  = result + parseFloat(item.discountPrice)
+          }else {
+            result  = result + parseFloat(item.price)
+          }
         }
       })
       return result || 0
