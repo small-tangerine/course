@@ -128,11 +128,9 @@ export default {
         // 请求后台保存时间
         getLessonSetVideo(this.learningDuration).then(res=>{
           if (res.error===ERR_OK){
-            if (end){
-              this.paused=true
-            }
+            this.paused = !!this.end;
           }
-          if (end){
+          if (this.end){
             this.paused=true
           }
         }).catch(()=>{
@@ -152,11 +150,14 @@ export default {
     },
     //监听播放
     onPlayerPlay () {
+      console.log("播放")
+      this.end=false
       this.paused = false
       this.$refs.videoPlayer.player.play();
     },
     //监听暂停
     onPlayerPause (player) {
+      console.log("暂停")
       this.paused = true
       this.$refs.videoPlayer.player.pause();
     },
@@ -165,6 +166,7 @@ export default {
     },
     //监听媒体是否已到达结尾，播放完
     onPlayerEnded (player) {
+      console.log("结尾")
       this.paused = false
       this.putLearningObj()
       this.end=true
@@ -235,7 +237,6 @@ export default {
     this.setLearningDuration(thisId)
     this.getTitle()
     this.getThisVideo({videoId:thisId.id})
-    // this.playerOptions.sources[0].src = this.sysConfig.fdfsHttpHost + '/' + this.training.examAvatar
   }, mounted () {
     this.timer = setInterval(this.putLearningObj, 10000)
     const setThis = document.querySelector("#to_this") || document.querySelector("#to_this1")

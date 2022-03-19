@@ -28,6 +28,8 @@ export function updateUserInfo (data) {
 
 // 编辑用户个人信息
 export function updateUserAvatar (data) {
+  const d=document.getElementsByClassName("dd")
+  d.item(0).innerHTML
   return axios.post('/api/v2/avatar/upload', data)
 }
 

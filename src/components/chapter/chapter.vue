@@ -31,6 +31,7 @@
 <script>
 import { normalSeconds } from 'utils/utils.js'
 import empty from "components/empty/empty";
+import {getToken} from "utils/auth";
 export default {
   components:{
     empty
@@ -45,7 +46,12 @@ export default {
   },
   methods:{
     goToVideo (item){
-       this.$emit('goToVideo', item)
+      if (getToken()){
+        this.$emit('goToVideo', item)
+      }else {
+        this.setShowLogin(true)
+        this.setLoginAction('login')
+      }
     }
   },
   filters: {
