@@ -17,7 +17,10 @@ export default {
   props: {
     list: {
       type: Array,
-      required: true
+      required: true,
+      default: function (){
+        return []
+      }
     },
     title: {
       type: String,
