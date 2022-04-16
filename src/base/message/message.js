@@ -2,7 +2,7 @@ import Vue from 'vue'
 import MessageVue from './message.vue'
 let messageConstructor = Vue.extend(MessageVue)
 let seed = 1
-let zIndex = 2000
+let zIndex = 999000
 let instance = undefined
 let instances = []
 let types = ['success', 'warning', 'error', 'info']
